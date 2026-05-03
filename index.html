@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Vitrine Taj — Fully custom window displays for small shops. Kinetic motion, 3D-printed sculpture, and original hand-painted art.">
+<title>Vitrine Taj — Custom Window Displays</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+
+/* ══════════════════════════════════════════════
+   HOME — HERO
+   Full-bleed window scene, text floats at bottom
+   (Moooi: image IS the design)
+══════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  height: 100vh; min-height: 600px;
+  overflow: hidden;
+  display: flex; align-items: flex-end;
+}
+
+/* The atmospheric window scene — now full-bleed */
+.hero__scene {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 70% 20%, rgba(74,143,163,0.18) 0%, transparent 45%),
+    radial-gradient(ellipse at 30% 80%, rgba(196,81,42,0.12) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, #1a1208 0%, #0a0907 100%);
+}
+
+/* floating shapes inside the scene */
+.shape {
+  position: absolute; border: 1px solid;
+  animation: floatShape var(--dur,8s) ease-in-out infinite;
+  animation-delay: var(--delay,0s);
+}
+.sh1{width:120px;height:120px;top:12%;left:8%;border-color:rgba(126,184,201,0.3);--dur:9s;--r:8deg;}
+.sh2{width:200px;height:200px;top:55%;left:60%;border-radius:50%;border-color:rgba(201,149,58,0.2);--dur:7s;--delay:-3s;}
+.sh3{width:80px;height:80px;top:70%;left:18%;border-color:rgba(196,81,42,0.4);--dur:11s;--delay:-5s;--r:45deg;}
+.sh4{width:55px;height:55px;top:20%;left:75%;border-color:rgba(126,184,201,0.25);--dur:8s;--delay:-1s;}
+.sh5{width:160px;height:160px;top:35%;left:40%;border-color:rgba(201,149,58,0.15);--dur:13s;--delay:-4s;--r:20deg;}
+.sh6{width:40px;height:40px;top:80%;left:75%;border-color:rgba(126,184,201,0.35);--dur:7s;--delay:-2s;}
+
+/* window frame — centered, large */
+.hero__window {
+  position: absolute;
+  top: 8%; bottom: 8%;
+  left: 50%; transform: translateX(-50%);
+  width: 38%; max-width: 520px;
+  border: 8px solid #1e1710;
+  box-shadow:
+    inset 0 0 80px rgba(0,0,0,.7),
+    0 30px 100px rgba(0,0,0,.6),
+    0 0 0 1px rgba(201,149,58,0.06);
+}
+.hero__window-glass {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #060e10 0%, #08080e 40%, #0e0806 100%);
+  overflow: hidden;
+}
+.hero__window-glass::before {
+  content:''; position:absolute; top:0;left:0;right:0;height:55%;
+  background:radial-gradient(ellipse at 50% 0%,rgba(74,143,163,0.28) 0%,transparent 70%);
+}
+.hero__window-glass::after {
+  content:''; position:absolute; bottom:0;left:0;right:0;height:45%;
+  background:radial-gradient(ellipse at 50% 100%,rgba(196,81,42,0.2) 0%,transparent 65%);
+}
+.hero__bar-v{position:absolute;top:0;bottom:0;left:50%;width:7px;background:#1e1710;transform:translateX(-50%);z-index:2;}
+.hero__bar-h{position:absolute;left:0;right:0;top:42%;height:7px;background:#1e1710;z-index:2;}
+
+/* orbiting dot */
+.w-orbit{position:absolute;top:50%;left:50%;width:110px;height:110px;margin:-55px 0 0 -55px;animation:orbit 14s linear infinite;opacity:.4;}
+.w-orbit::before{content:'';position:absolute;top:0;left:50%;width:5px;height:5px;background:var(--blue);border-radius:50%;margin-left:-2.5px;box-shadow:0 0 10px var(--blue);}
+/* gear */
+.w-gear{position:absolute;top:28%;left:32%;width:75px;height:75px;animation:spinSlow 28s linear infinite;opacity:.3;}
+.w-gear-ring{position:absolute;inset:14%;border-radius:50%;border:1.5px solid var(--orange);}
+.w-gear-spoke{position:absolute;top:50%;left:50%;width:100%;height:1.5px;background:var(--orange);transform-origin:left center;margin-top:-.75px;}
+/* shapes inside window */
+.wi1{position:absolute;width:50px;height:50px;top:15%;left:12%;border:1px solid rgba(126,184,201,0.5);animation:floatShape 8s ease-in-out infinite;--r:12deg;}
+.wi2{position:absolute;width:70px;height:70px;top:60%;left:58%;border:1px solid rgba(201,149,58,0.4);border-radius:50%;animation:floatShape 6s ease-in-out infinite;animation-delay:-2s;}
+.wi3{position:absolute;width:38px;height:38px;top:72%;left:18%;border:1px solid rgba(196,81,42,0.55);animation:floatShape 9s ease-in-out infinite;animation-delay:-4s;--r:45deg;}
+/* glass reflections */
+.w-ref1{position:absolute;top:0;left:14%;width:1.5px;height:100%;background:linear-gradient(to bottom,transparent,rgba(126,184,201,.08) 45%,transparent);transform:skew(-8deg);}
+.w-ref2{position:absolute;top:0;left:30%;width:1px;height:65%;background:linear-gradient(to bottom,rgba(126,184,201,.05),transparent);transform:skew(-5deg);}
+
+.hero__nameplate{position:absolute;bottom:4%;left:50%;transform:translateX(-50%);font-family:'Playfair Display',serif;font-size:.9rem;letter-spacing:.55em;text-transform:uppercase;color:rgba(240,232,216,.32);white-space:nowrap;z-index:3;text-shadow:0 0 20px rgba(126,184,201,0.25);}
+
+/* ambient glow */
+.hero__glow-l { position:absolute;top:0;left:0;bottom:0;width:40%;background:radial-gradient(ellipse at 0% 50%,rgba(126,184,201,0.05),transparent 70%);pointer-events:none; }
+.hero__glow-r { position:absolute;top:0;right:0;bottom:0;width:40%;background:radial-gradient(ellipse at 100% 50%,rgba(196,81,42,0.05),transparent 70%);pointer-events:none; }
+
+/* Hero text — floats at bottom left, Moooi style */
+.hero__grad {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 55%;
+  background: linear-gradient(to top, rgba(10,9,7,1) 0%, rgba(10,9,7,.6) 50%, transparent 100%);
+  pointer-events: none;
+}
+.hero__content {
+  position: relative; z-index: 10;
+  padding: 4rem 5rem;
+  max-width: 700px;
+}
+.hero__label {
+  font-size: .48rem; letter-spacing: .4em; text-transform: uppercase;
+  color: var(--blue); display: block; margin-bottom: 1.4rem;
+  opacity: 0; animation: riseIn .7s .3s forwards;
+}
+.hero__title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 6vw, 7.5rem);
+  font-weight: 400; line-height: .95;
+  opacity: 0; animation: riseIn .9s .5s forwards;
+}
+.hero__title em { font-style: italic; color: var(--gold); display: block; }
+.hero__actions {
+  margin-top: 2.5rem; display: flex; gap: 1.5rem; align-items: center;
+  opacity: 0; animation: riseIn .9s .8s forwards;
+}
+
+/* scroll indicator */
+.hero__scroll {
+  position: absolute; bottom: 2.5rem; right: 5rem;
+  display: flex; align-items: center; gap: .8rem;
+  font-size: .45rem; letter-spacing: .3em; text-transform: uppercase;
+  color: rgba(240,232,216,.35);
+  opacity: 0; animation: riseIn .8s 1.2s forwards;
+  z-index: 10;
+}
+.hero__scroll-line {
+  width: 2.5rem; height: 1px; background: rgba(240,232,216,.2);
+  position: relative; overflow: hidden;
+}
+.hero__scroll-line::after {
+  content: ''; position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%; background: var(--blue);
+  animation: tickerRoll 2s ease-in-out infinite;
+}
+
+/* ══════════════════════════════════════════════
+   EDITORIAL CARD GRID (Moooi-inspired)
+   Big asymmetric grid — image fills the card
+══════════════════════════════════════════════ */
+.ticker {
+  background: var(--orange);
+  overflow: hidden; padding: .55rem 0;
+}
+.ticker__track {
+  display: flex; white-space: nowrap; gap: 2.5rem;
+  animation: tickerRoll 24s linear infinite;
+  font-size: .48rem; letter-spacing: .3em; text-transform: uppercase;
+  color: rgba(240,232,216,.9);
+}
+
+.grid-section { padding: 5rem; }
+
+/* Moooi grid: 1 fat hero + grid of smaller */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 2px;
+  margin-top: 3rem;
+}
+
+/* Hero card — spans full width */
+.card--hero {
+  grid-column: 1 / -1;
+  height: 70vh; min-height: 500px;
+}
+.card--hero .card__title { font-size: clamp(2rem,3.5vw,4rem); }
+
+/* Two equal cards */
+.card--half { height: 55vh; min-height: 380px; }
+.card--half .card__title { font-size: clamp(1.5rem,2.5vw,2.5rem); }
+
+/* Three-column row */
+.card--third { height: 45vh; min-height: 320px; }
+.card--third .card__title { font-size: clamp(1.2rem,2vw,2rem); }
+
+/* 3-col sub-grid */
+.card-grid-3 {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px; grid-column: 1 / -1;
+}
+
+/* Simulated image backgrounds — styled with CSS gradients
+   (In production these would be real photos) */
+.card__scene {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .8s cubic-bezier(0.16,1,0.3,1);
+}
+.card:hover .card__scene { transform: scale(1.04); }
+
+/* Unique scene gradients for each card */
+.scene-kinetic {
+  background:
+    radial-gradient(ellipse at 60% 30%, rgba(196,81,42,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 30% 70%, rgba(126,184,201,0.2) 0%, transparent 50%),
+    linear-gradient(135deg, #0e0c0a 0%, #1a1008 50%, #0a0e10 100%);
+}
+.scene-sculpture {
+  background:
+    radial-gradient(ellipse at 40% 40%, rgba(201,149,58,0.3) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 70%, rgba(126,184,201,0.15) 0%, transparent 50%),
+    linear-gradient(160deg, #0e100a 0%, #100e0a 100%);
+}
+.scene-paint {
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(196,81,42,0.25) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(201,149,58,0.25) 0%, transparent 50%),
+    linear-gradient(120deg, #0a0e0c 0%, #10080a 100%);
+}
+.scene-story {
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(126,184,201,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 30%, rgba(201,149,58,0.2) 0%, transparent 50%),
+    linear-gradient(200deg, #080a10 0%, #0e0a08 100%);
+}
+.scene-seasonal {
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(196,81,42,0.3) 0%, transparent 55%),
+    radial-gradient(ellipse at 30% 80%, rgba(126,184,201,0.2) 0%, transparent 50%),
+    linear-gradient(140deg, #100808 0%, #0a0810 100%);
+}
+.scene-process {
+  background:
+    radial-gradient(ellipse at 60% 60%, rgba(201,149,58,0.28) 0%, transparent 55%),
+    radial-gradient(ellipse at 25% 25%, rgba(126,184,201,0.18) 0%, transparent 50%),
+    linear-gradient(110deg, #0a100a 0%, #100a0a 100%);
+}
+
+/* animated elements inside card scenes */
+.scene-elem {
+  position: absolute; border: 1px solid;
+  animation: floatShape var(--dur,8s) ease-in-out infinite;
+  animation-delay: var(--delay,0s);
+  pointer-events: none;
+}
+.scene-gear {
+  position: absolute; animation: spinSlow var(--dur,20s) linear infinite;
+  pointer-events: none;
+}
+.scene-orbit-wrap {
+  position: absolute; animation: orbit 12s linear infinite;
+  pointer-events: none;
+}
+.scene-orbit-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--blue); box-shadow: 0 0 8px var(--blue);
+}
+
+/* ── MANIFESTO STRIP (Moooi-style full-width statement) */
+.manifesto {
+  padding: 8rem 5rem;
+  background: var(--dusk);
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.manifesto::before {
+  content: 'CUSTOM';
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  font-family: 'Playfair Display', serif;
+  font-size: 20vw; font-weight: 400; letter-spacing: -.03em;
+  color: rgba(126,184,201,.025); pointer-events: none; white-space: nowrap;
+}
+.manifesto__label {
+  font-size: .48rem; letter-spacing: .4em; text-transform: uppercase;
+  color: var(--blue); display: block; margin-bottom: 2rem;
+}
+.manifesto__text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 5.5rem);
+  font-weight: 400; line-height: 1.1;
+  max-width: 900px; margin: 0 auto;
+}
+.manifesto__text em { font-style: italic; color: var(--gold); }
+.manifesto__sub {
+  font-size: .8rem; line-height: 2; color: var(--muted-lt);
+  max-width: 500px; margin: 2.5rem auto 0;
+}
+.manifesto__sub strong { color: var(--cream); font-weight: 400; }
+
+/* ── STATS ROW (Moooi: clean, editorial) */
+.stats-row {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  border-top: 1px solid rgba(240,232,216,.06);
+}
+.stat-item {
+  padding: 4rem 3rem; text-align: center;
+  border-right: 1px solid rgba(240,232,216,.06);
+  transition: background .3s;
+}
+.stat-item:last-child { border-right: none; }
+.stat-item:hover { background: rgba(240,232,216,.02); }
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem,4vw,5rem); font-weight: 400; line-height: 1;
+  background: linear-gradient(135deg,var(--gold),var(--blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-desc {
+  font-size: .52rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted); margin-top: .8rem;
+}
+
+/* ── CTA STRIP */
+.cta-strip {
+  padding: 7rem 5rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 4rem;
+  border-top: 1px solid rgba(240,232,216,.05);
+}
+.cta-strip h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem,4vw,5rem); font-weight: 400; line-height: 1.05;
+}
+.cta-strip h2 em { font-style: italic; color: var(--gold); }
+.cta-strip__right { display: flex; flex-direction: column; gap: 1rem; align-items: flex-end; flex-shrink: 0; }
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .hero__content { padding:3rem 2.5rem; }
+  .hero__scroll { right:2.5rem; }
+  .grid-section { padding:3rem 2.5rem; }
+  .card--hero { height:55vw; min-height:320px; }
+  .card--half { height:55vw; min-height:280px; }
+  .card-grid { grid-template-columns:1fr; }
+  .card--hero { grid-column:1; }
+  .card-grid-3 { grid-template-columns:1fr; }
+  .manifesto { padding:6rem 2.5rem; }
+  .stats-row { grid-template-columns:1fr 1fr; }
+  .stat-item { border-bottom:1px solid rgba(240,232,216,.06); }
+  .cta-strip { flex-direction:column;align-items:flex-start;padding:5rem 2.5rem; }
+  .cta-strip__right { align-items:flex-start; }
+}
+@media(max-width:640px){
+  .hero__title { font-size:clamp(2.8rem,10vw,4rem); }
+  .stats-row { grid-template-columns:1fr; }
+  .card--third { height:70vw; }
+}
+</style>
+</head>
+<body>
+
+<div class="cur"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav__logo" href="index.html">Vitrine <em>Taj</em></a>
+  <div class="nav__links">
+    <a class="nav__link" href="about.html">Our Story</a>
+    <a class="nav__link" href="services.html">What We Create</a>
+    <a class="nav__link" href="process.html">Process</a>
+    <a class="nav__link" href="contact.html">Contact</a>
+  </div>
+  <a class="nav__cta" href="contact.html">Start a Project</a>
+  <button class="nav__burger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav__drawer">
+  <a href="index.html">Home</a>
+  <a href="about.html">Our Story</a>
+  <a href="services.html">What We Create</a>
+  <a href="process.html">Process</a>
+  <a href="contact.html">Start a Project</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero__scene">
+    <!-- background shapes -->
+    <div class="shape sh1" style="--r:8deg"></div>
+    <div class="shape sh2"></div>
+    <div class="shape sh3" style="--r:45deg"></div>
+    <div class="shape sh4"></div>
+    <div class="shape sh5" style="--r:20deg"></div>
+    <div class="shape sh6"></div>
+
+    <!-- centre window -->
+    <div class="hero__window">
+      <div class="hero__window-glass">
+        <div class="wi1" style="--r:12deg"></div>
+        <div class="wi2"></div>
+        <div class="wi3" style="--r:45deg"></div>
+        <div class="w-orbit">
+          <div style="position:absolute;top:0;left:50%;width:5px;height:5px;background:var(--blue);border-radius:50%;margin-left:-2.5px;box-shadow:0 0 10px var(--blue);"></div>
+        </div>
+        <div class="w-gear">
+          <div class="w-gear-ring"></div>
+          <div class="w-gear-spoke" style="transform:rotate(0deg)"></div>
+          <div class="w-gear-spoke" style="transform:rotate(60deg)"></div>
+          <div class="w-gear-spoke" style="transform:rotate(120deg)"></div>
+        </div>
+        <div class="w-ref1"></div>
+        <div class="w-ref2"></div>
+      </div>
+      <div class="hero__bar-v"></div>
+      <div class="hero__bar-h"></div>
+      <div class="hero__nameplate">La Boutique</div>
+    </div>
+
+    <div class="hero__glow-l"></div>
+    <div class="hero__glow-r"></div>
+  </div>
+
+  <div class="hero__grad"></div>
+
+  <div class="hero__content">
+    <span class="hero__label">Bespoke Window Displays</span>
+    <h1 class="hero__title">
+      Make them<br>stop.<br><em>Make them look.</em>
+    </h1>
+    <div class="hero__actions">
+      <a href="contact.html" class="btn btn--fill"><span>Start a Project</span></a>
+      <a href="services.html" class="btn btn--text">What We Create →</a>
+    </div>
+  </div>
+
+  <div class="hero__scroll">
+    <div class="hero__scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker__track">
+    <span>100% Custom Designed</span><span>·</span>
+    <span>3D Printed Sculpture</span><span>·</span>
+    <span>Kinetic Motion</span><span>·</span>
+    <span>Hand-Painted Art</span><span>·</span>
+    <span>Built for Small Shops</span><span>·</span>
+    <span>Nothing Off The Shelf</span><span>·</span>
+    <span>100% Custom Designed</span><span>·</span>
+    <span>3D Printed Sculpture</span><span>·</span>
+    <span>Kinetic Motion</span><span>·</span>
+    <span>Hand-Painted Art</span><span>·</span>
+    <span>Built for Small Shops</span><span>·</span>
+    <span>Nothing Off The Shelf</span><span>·</span>
+  </div>
+</div>
+
+<!-- CARD GRID — editorial / Moooi style -->
+<div class="grid-section">
+  <div class="label reveal">What We Create</div>
+
+  <div class="card-grid">
+
+    <!-- HERO CARD: Kinetic Displays -->
+    <a href="services.html" class="card card--hero reveal">
+      <div class="card__img">
+        <div class="card__scene scene-kinetic">
+          <!-- animated scene elements -->
+          <div class="scene-elem" style="width:140px;height:140px;top:15%;left:10%;border-color:rgba(126,184,201,0.4);--dur:9s;--r:10deg;"></div>
+          <div class="scene-elem" style="width:80px;height:80px;top:60%;left:70%;border-color:rgba(196,81,42,0.5);--dur:7s;--delay:-3s;--r:30deg;"></div>
+          <div class="scene-gear" style="width:120px;height:120px;top:40%;left:55%;--dur:22s;">
+            <div style="position:absolute;inset:15%;border-radius:50%;border:2px solid var(--orange);"></div>
+            <div style="position:absolute;top:50%;left:50%;width:100%;height:2px;background:var(--orange);transform-origin:left center;margin-top:-1px;transform:rotate(0deg)"></div>
+            <div style="position:absolute;top:50%;left:50%;width:100%;height:2px;background:var(--orange);transform-origin:left center;margin-top:-1px;transform:rotate(60deg)"></div>
+            <div style="position:absolute;top:50%;left:50%;width:100%;height:2px;background:var(--orange);transform-origin:left center;margin-top:-1px;transform:rotate(120deg)"></div>
+          </div>
+          <div class="scene-orbit-wrap" style="width:180px;height:180px;top:calc(20% - 90px);left:calc(25% - 90px);">
+            <div class="scene-orbit-dot" style="position:absolute;top:0;left:50%;margin-left:-2.5px;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card__overlay">
+        <span class="card__label">Service 001</span>
+        <div class="card__title heading-md">Kinetic &amp; Automated Displays</div>
+        <span class="card__sub">Custom-engineered motion — rotating, oscillating, rising and falling</span>
+      </div>
+      <div class="card__arrow">→</div>
+    </a>
+
+    <!-- Card 2: 3D Sculpture -->
+    <a href="services.html" class="card card--half reveal reveal-delay-1">
+      <div class="card__img">
+        <div class="card__scene scene-sculpture">
+          <div class="scene-elem" style="width:100px;height:100px;top:20%;left:15%;border-color:rgba(201,149,58,0.45);--dur:8s;--r:20deg;"></div>
+          <div class="scene-elem" style="width:60px;height:60px;border-radius:50%;top:55%;left:60%;border-color:rgba(126,184,201,0.4);--dur:6s;--delay:-2s;"></div>
+          <div class="scene-elem" style="width:150px;height:150px;top:30%;left:40%;border-color:rgba(201,149,58,0.2);--dur:11s;--r:45deg;"></div>
+        </div>
+      </div>
+      <div class="card__overlay">
+        <span class="card__label">Service 002</span>
+        <div class="card__title">3D Printed Sculpture &amp; Props</div>
+        <span class="card__sub">One-of-a-kind fabricated pieces for your brand</span>
+      </div>
+      <div class="card__arrow">→</div>
+    </a>
+
+    <!-- Card 3: Painted Art -->
+    <a href="services.html" class="card card--half reveal reveal-delay-2">
+      <div class="card__img">
+        <div class="card__scene scene-paint">
+          <div class="scene-elem" style="width:200px;height:200px;top:10%;left:-20px;border-color:rgba(196,81,42,0.25);--dur:12s;--r:5deg;"></div>
+          <div class="scene-elem" style="width:80px;height:80px;border-radius:50%;top:50%;left:55%;border-color:rgba(201,149,58,0.45);--dur:7s;--delay:-3s;"></div>
+          <div class="scene-elem" style="width:50px;height:50px;top:70%;left:20%;border-color:rgba(126,184,201,0.35);--dur:9s;--delay:-1s;--r:33deg;"></div>
+        </div>
+      </div>
+      <div class="card__overlay">
+        <span class="card__label">Service 003</span>
+        <div class="card__title">Painted Art &amp; Illustration</div>
+        <span class="card__sub">Hand-painted backdrops and original artwork</span>
+      </div>
+      <div class="card__arrow">→</div>
+    </a>
+
+    <!-- 3-col row -->
+    <div class="card-grid-3">
+      <a href="services.html" class="card card--third reveal">
+        <div class="card__img">
+          <div class="card__scene scene-story">
+            <div class="scene-elem" style="width:90px;height:90px;top:20%;left:10%;border-color:rgba(126,184,201,0.4);--dur:9s;--r:15deg;"></div>
+            <div class="scene-elem" style="width:55px;height:55px;border-radius:50%;top:55%;left:55%;border-color:rgba(201,149,58,0.5);--dur:6s;--delay:-2s;"></div>
+          </div>
+        </div>
+        <div class="card__overlay">
+          <span class="card__label">Service 004</span>
+          <div class="card__title">Seasonal &amp; Themed Displays</div>
+        </div>
+        <div class="card__arrow">→</div>
+      </a>
+      <a href="about.html" class="card card--third reveal reveal-delay-1">
+        <div class="card__img">
+          <div class="card__scene scene-seasonal">
+            <div class="scene-elem" style="width:120px;height:120px;top:15%;left:20%;border-color:rgba(196,81,42,0.35);--dur:10s;--r:8deg;"></div>
+            <div class="scene-elem" style="width:70px;height:70px;top:60%;left:50%;border-color:rgba(126,184,201,0.3);border-radius:50%;--dur:7s;--delay:-3s;"></div>
+          </div>
+        </div>
+        <div class="card__overlay">
+          <span class="card__label">Our Story</span>
+          <div class="card__title">Built by Engineers Who Fell in Love With a Window</div>
+        </div>
+        <div class="card__arrow">→</div>
+      </a>
+      <a href="process.html" class="card card--third reveal reveal-delay-2">
+        <div class="card__img">
+          <div class="card__scene scene-process">
+            <div class="scene-gear" style="width:100px;height:100px;top:20%;left:20%;--dur:18s;">
+              <div style="position:absolute;inset:15%;border-radius:50%;border:1.5px solid var(--blue);"></div>
+              <div style="position:absolute;top:50%;left:50%;width:100%;height:1.5px;background:var(--blue);transform-origin:left center;margin-top:-.75px;transform:rotate(0deg)"></div>
+              <div style="position:absolute;top:50%;left:50%;width:100%;height:1.5px;background:var(--blue);transform-origin:left center;margin-top:-.75px;transform:rotate(90deg)"></div>
+            </div>
+            <div class="scene-elem" style="width:80px;height:80px;border-radius:50%;top:45%;left:50%;border-color:rgba(201,149,58,0.4);--dur:8s;--delay:-2s;"></div>
+          </div>
+        </div>
+        <div class="card__overlay">
+          <span class="card__label">How It Works</span>
+          <div class="card__title">From First Conversation to Opening Night</div>
+        </div>
+        <div class="card__arrow">→</div>
+      </a>
+    </div>
+
+  </div><!-- /card-grid -->
+</div><!-- /grid-section -->
+
+<!-- MANIFESTO -->
+<section class="manifesto">
+  <span class="manifesto__label reveal">The Vitrine Taj Belief</span>
+  <div class="manifesto__text reveal">
+    Your window is your loudest voice on the street — and most shops are <em>whispering.</em>
+  </div>
+  <p class="manifesto__sub reveal">
+    We design and build <strong>fully custom window displays</strong> for independent shops — kinetic motion, 3D-printed sculpture, and hand-painted art, conceived and made from scratch just for you.
+  </p>
+  <div style="margin-top:3rem;" class="reveal">
+    <a href="about.html" class="btn btn--outline">Read Our Story</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-item reveal hoverable">
+    <div class="stat-num">100%</div>
+    <div class="stat-desc">Custom — every project</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-1 hoverable">
+    <div class="stat-num">0</div>
+    <div class="stat-desc">Off-the-shelf parts</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-2 hoverable">
+    <div class="stat-num">2</div>
+    <div class="stat-desc">Engineers &amp; artists</div>
+  </div>
+  <div class="stat-item reveal reveal-delay-3 hoverable">
+    <div class="stat-num">∞</div>
+    <div class="stat-desc">Possible designs</div>
+  </div>
+</div>
+
+<!-- CTA STRIP -->
+<div class="cta-strip">
+  <div class="reveal">
+    <h2>Ready to make your window <em>unforgettable?</em></h2>
+  </div>
+  <div class="cta-strip__right reveal">
+    <a href="contact.html" class="btn btn--fill"><span>Start a Project</span></a>
+    <a href="process.html" class="btn btn--text">See How It Works →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer__logo">Vitrine <em>Taj</em></div>
+  <div class="footer__links">
+    <a href="about.html">Our Story</a>
+    <a href="services.html">Services</a>
+    <a href="process.html">Process</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="footer__copy">© 2026 Taj LLC</div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

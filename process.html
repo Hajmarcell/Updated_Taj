@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process — Vitrine Taj</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+.proc-hero {
+  position:relative;height:72vh;min-height:460px;
+  display:flex;align-items:flex-end;overflow:hidden;
+}
+.proc-hero__bg {
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 30% 30%,rgba(126,184,201,0.18) 0%,transparent 50%),
+    radial-gradient(ellipse at 70% 70%,rgba(201,149,58,0.15) 0%,transparent 50%),
+    linear-gradient(160deg,#080a10 0%,#0a0907 100%);
+}
+.proc-hero__shape{position:absolute;border:1px solid;animation:floatShape var(--d,8s) ease-in-out infinite;animation-delay:var(--dl,0s);}
+.proc-hero__gear{position:absolute;animation:spinSlow var(--d,20s) linear infinite;}
+.proc-hero__grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,9,7,1) 0%,rgba(10,9,7,.45) 40%,transparent 100%);}
+.proc-hero__content{position:relative;z-index:2;padding:4rem 5rem;max-width:750px;}
+.proc-hero__label{font-size:.48rem;letter-spacing:.4em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:1.4rem;opacity:0;animation:riseIn .7s .3s forwards;}
+.proc-hero__title{font-family:'Playfair Display',serif;font-size:clamp(3rem,6vw,7rem);font-weight:400;line-height:.95;opacity:0;animation:riseIn .9s .5s forwards;}
+.proc-hero__title em{font-style:italic;color:var(--gold);display:block;}
+
+/* Steps — Moooi editorial timeline */
+.steps-section { padding:7rem 5rem; }
+.steps-list { display:flex;flex-direction:column;gap:2px;background:rgba(240,232,216,.03);margin-top:4rem; }
+.step {
+  display:grid;grid-template-columns:5rem 1fr 2fr;gap:4rem;
+  padding:4rem;background:var(--night);
+  border:1px solid transparent;
+  transition:background .3s,border-color .3s;
+  align-items:start;
+  position:relative;
+}
+.step:hover{background:var(--dusk);border-color:rgba(126,184,201,.1);}
+.step::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--orange),var(--blue));transform:scaleY(0);transition:transform .5s var(--ease-out);transform-origin:top;}
+.step:hover::after{transform:scaleY(1);}
+.step-num{font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:400;color:rgba(126,184,201,.15);line-height:1;}
+.step-header-top{font-size:.45rem;letter-spacing:.35em;text-transform:uppercase;color:var(--blue);margin-bottom:.8rem;display:block;}
+.step-title{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,2.5vw,2.5rem);font-weight:400;}
+.step-body{font-size:.78rem;line-height:2.1;color:var(--muted-lt);}
+.step-body strong{color:var(--cream);font-weight:400;}
+.step-body p+p{margin-top:1rem;}
+
+/* Detail strip — small print after each step */
+.step-detail{font-size:.58rem;letter-spacing:.1em;color:var(--muted);margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(240,232,216,.05);}
+
+/* FAQ */
+.faq-section{padding:7rem 5rem;background:var(--dusk);}
+.faq-list{max-width:760px;margin-top:4rem;}
+.faq-item{border-bottom:1px solid rgba(126,184,201,0.08);}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:1.8rem 0;font-size:.82rem;letter-spacing:.04em;color:var(--cream);cursor:none;gap:2rem;}
+.faq-q::after{content:'+';font-size:1.1rem;color:var(--blue);flex-shrink:0;transition:transform .3s;}
+.faq-item.open .faq-q::after{transform:rotate(45deg);color:var(--orange);}
+.faq-a{font-size:.72rem;line-height:2.1;color:var(--muted-lt);max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s ease;}
+.faq-item.open .faq-a{max-height:300px;padding-bottom:2rem;}
+
+@media(max-width:1024px){
+  .proc-hero__content{padding:3rem 2.5rem;}
+  .steps-section,.faq-section{padding:5rem 2.5rem;}
+  .step{grid-template-columns:3rem 1fr;grid-template-rows:auto auto;gap:1.5rem 2rem;padding:2.5rem;}
+  .step-body{grid-column:2;}
+}
+@media(max-width:640px){
+  .step{grid-template-columns:1fr;gap:1rem;padding:2rem;}
+  .step-num{font-size:2.5rem;}
+  .step-body{grid-column:1;}
+}
+</style>
+</head>
+<body>
+<div class="cur"></div>
+
+<nav class="nav">
+  <a class="nav__logo" href="index.html">Vitrine <em>Taj</em></a>
+  <div class="nav__links">
+    <a class="nav__link" href="about.html">Our Story</a>
+    <a class="nav__link" href="services.html">What We Create</a>
+    <a class="nav__link" href="process.html">Process</a>
+    <a class="nav__link" href="contact.html">Contact</a>
+  </div>
+  <a class="nav__cta" href="contact.html">Start a Project</a>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav__drawer">
+  <a href="index.html">Home</a>
+  <a href="about.html">Our Story</a>
+  <a href="services.html">What We Create</a>
+  <a href="process.html">Process</a>
+  <a href="contact.html">Start a Project</a>
+</div>
+
+<section class="proc-hero">
+  <div class="proc-hero__bg">
+    <div class="proc-hero__shape" style="width:160px;height:160px;top:12%;left:6%;border-color:rgba(126,184,201,0.25);--d:10s;--r:8deg;"></div>
+    <div class="proc-hero__shape" style="width:90px;height:90px;border-radius:50%;top:60%;left:75%;border-color:rgba(201,149,58,0.3);--d:7s;--dl:-3s;"></div>
+    <div class="proc-hero__gear" style="width:180px;height:180px;top:20%;left:55%;--d:35s;">
+      <div style="position:absolute;inset:15%;border-radius:50%;border:1.5px solid rgba(196,81,42,0.25);"></div>
+      <div style="position:absolute;top:50%;left:50%;width:100%;height:1.5px;background:rgba(196,81,42,0.25);transform-origin:left center;margin-top:-.75px;transform:rotate(0deg)"></div>
+      <div style="position:absolute;top:50%;left:50%;width:100%;height:1.5px;background:rgba(196,81,42,0.25);transform-origin:left center;margin-top:-.75px;transform:rotate(72deg)"></div>
+      <div style="position:absolute;top:50%;left:50%;width:100%;height:1.5px;background:rgba(196,81,42,0.25);transform-origin:left center;margin-top:-.75px;transform:rotate(144deg)"></div>
+    </div>
+    <div class="proc-hero__shape" style="width:50px;height:50px;top:80%;left:25%;border-color:rgba(196,81,42,0.35);--d:9s;--dl:-5s;--r:45deg;"></div>
+  </div>
+  <div class="proc-hero__grad"></div>
+  <div class="proc-hero__content">
+    <span class="proc-hero__label">How It Works</span>
+    <h1 class="proc-hero__title">From first conversation<br>to <em>opening night.</em></h1>
+  </div>
+</section>
+
+<section class="steps-section">
+  <div class="reveal">
+    <span class="label">The Process</span>
+    <h2 class="heading-lg" style="margin-top:1rem;">Four steps. You're involved in <em>every one.</em></h2>
+  </div>
+
+  <div class="steps-list">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div>
+        <span class="step-header-top">Week 1</span>
+        <div class="step-title">Discovery Call</div>
+      </div>
+      <div class="step-body">
+        <p>We start with a free, no-pressure conversation. Tell us about your shop — your brand, your customers, what you sell, what you want people to feel. <strong>No formal brief needed.</strong> We ask the right questions.</p>
+        <p>By the end of the call, we'll have a clear sense of what your window could become — and you'll have a sense of whether we're the right fit.</p>
+        <div class="step-detail">Free · No commitment · 45–60 minutes · Video or phone</div>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <div>
+        <span class="step-header-top">Weeks 2–3</span>
+        <div class="step-title">Concept &amp; Design</div>
+      </div>
+      <div class="step-body">
+        <p>We develop a full concept — mood boards, colour palette, structural sketches, and where applicable, 3D previews of the final display. <strong>You review and approve everything</strong> before a single component is fabricated.</p>
+        <p>This is where the magic starts to feel real. You'll see your window taking shape for the first time.</p>
+        <div class="step-detail">Mood boards · Sketches · 3D previews · Revision rounds included</div>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <div>
+        <span class="step-header-top">Weeks 4–7</span>
+        <div class="step-title">Build &amp; Fabricate</div>
+      </div>
+      <div class="step-body">
+        <p>We print, paint, engineer, wire, and assemble every element in our studio. <strong>Progress photos and updates throughout</strong> — you're never left wondering what's happening.</p>
+        <p>Every kinetic component is tested extensively before we pack it up. Nothing leaves the studio until it works perfectly.</p>
+        <div class="step-detail">In-studio fabrication · Progress updates · Full QA before shipping</div>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num">04</div>
+      <div>
+        <span class="step-header-top">Final Week</span>
+        <div class="step-title">Install &amp; Launch</div>
+      </div>
+      <div class="step-body">
+        <p>We come to you. We set everything up, test every motion sequence, adjust for your specific window dimensions, and make sure it looks exactly right. <strong>We don't leave until it's perfect.</strong></p>
+        <p>After install, you get a full handover — how everything works, how to turn it on and off, and how to reach us if anything needs attention.</p>
+        <div class="step-detail">On-site install · Full handover · Ongoing support available</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq-section">
+  <div class="reveal">
+    <span class="label">Common Questions</span>
+    <h2 class="heading-lg" style="margin-top:1rem;">Things people usually <em>ask us.</em></h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item reveal">
+      <div class="faq-q">How long does a project take?</div>
+      <div class="faq-a">Most projects run 6–8 weeks from discovery call to install. Simpler displays can be faster; more complex kinetic builds may take a little longer. We'll give you a clear timeline after our first conversation.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q">Do I need to know what I want before reaching out?</div>
+      <div class="faq-a">Not at all. Many clients come to us with nothing more than "I want my window to feel magical." That's enough to start. We're good at drawing ideas out through conversation — that's what the discovery call is for.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q">What does it cost?</div>
+      <div class="faq-a">Every project is custom, so pricing varies. We'll discuss budget openly in our first call — there's no awkwardness about it. We work with a range of budgets and will always be honest about what's achievable within yours.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q">Do you do seasonal swaps?</div>
+      <div class="faq-a">Yes. Many clients work with us on an ongoing basis — updating their display for the holidays, new seasons, or product launches. We offer maintenance and swap-out packages.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q">Do you travel for installs?</div>
+      <div class="faq-a">Yes. We travel to install every display ourselves — we won't ship you a crate and wish you luck. Travel costs are factored into the project quote up front, so there are no surprises.</div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__logo">Vitrine <em>Taj</em></div>
+  <div class="footer__links">
+    <a href="about.html">Our Story</a>
+    <a href="services.html">Services</a>
+    <a href="process.html">Process</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="footer__copy">© 2026 Taj LLC</div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>

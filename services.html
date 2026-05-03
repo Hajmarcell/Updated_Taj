@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What We Create — Vitrine Taj</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+.svc-hero {
+  position: relative; height: 75vh; min-height: 480px;
+  display: flex; align-items: flex-end; overflow: hidden;
+}
+.svc-hero__bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 70% 30%, rgba(196,81,42,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 25% 70%, rgba(126,184,201,0.15) 0%, transparent 50%),
+    linear-gradient(140deg, #0a0e10 0%, #0a0907 100%);
+}
+.svc-hero__shape { position:absolute; border:1px solid; animation:floatShape var(--d,8s) ease-in-out infinite; animation-delay:var(--dl,0s); }
+.svc-hero__gear { position:absolute; animation:spinSlow var(--d,20s) linear infinite; }
+.svc-hero__grad { position:absolute;inset:0;background:linear-gradient(to top,rgba(10,9,7,1) 0%,rgba(10,9,7,.45) 40%,transparent 100%); }
+.svc-hero__content { position:relative;z-index:2;padding:4rem 5rem;max-width:750px; }
+.svc-hero__label { font-size:.48rem;letter-spacing:.4em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:1.4rem;opacity:0;animation:riseIn .7s .3s forwards; }
+.svc-hero__title { font-family:'Playfair Display',serif;font-size:clamp(3rem,6vw,7rem);font-weight:400;line-height:.95;opacity:0;animation:riseIn .9s .5s forwards; }
+.svc-hero__title em { font-style:italic;color:var(--gold);display:block; }
+.svc-hero__sub { font-size:.8rem;line-height:2;color:var(--muted-lt);max-width:480px;margin-top:1.5rem;opacity:0;animation:riseIn .9s .7s forwards; }
+
+/* Service cards — editorial full-bleed grid */
+.svc-grid-wrap { padding: 5rem; }
+.svc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: rgba(240,232,216,.03);
+}
+
+.svc-card {
+  position: relative; overflow: hidden;
+  display: block; min-height: 420px;
+  background: var(--dusk);
+  border: 1px solid transparent;
+  transition: border-color .4s;
+}
+.svc-card:hover { border-color: rgba(126,184,201,.12); }
+.svc-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(to right, var(--orange), var(--blue));
+  transform: scaleX(0); transition: transform .45s cubic-bezier(0.16,1,0.3,1);
+  transform-origin: left;
+}
+.svc-card:hover::after { transform: scaleX(1); }
+
+/* Animated scene background per card */
+.svc-scene {
+  position: absolute; inset: 0; overflow: hidden;
+  transition: opacity .4s;
+}
+.svc-card:hover .svc-scene { opacity: .85; }
+
+.svc-content {
+  position: relative; z-index: 2;
+  padding: 3rem;
+  height: 100%;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  background: linear-gradient(to top, rgba(10,9,7,.9) 0%, rgba(10,9,7,.3) 60%, transparent 100%);
+}
+.svc-num { font-size:.45rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(240,232,216,.35);margin-bottom:.8rem;display:block; }
+.svc-title { font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2vw,2rem);font-weight:400;margin-bottom:.8rem;line-height:1.15; }
+.svc-desc { font-size:.68rem;line-height:1.95;color:var(--muted-lt);max-width:380px; }
+.svc-tag { font-size:.45rem;letter-spacing:.28em;text-transform:uppercase;color:var(--orange);margin-top:1.5rem;display:block; }
+
+/* icon box — replaces emoji, more refined */
+.svc-icon {
+  position: absolute; top:3rem; right:3rem;
+  width:52px;height:52px;
+  border: 1px solid rgba(126,184,201,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; z-index: 3;
+  transition: border-color .3s, transform .5s, box-shadow .3s;
+}
+.svc-card:hover .svc-icon {
+  border-color: var(--blue);
+  transform: rotate(12deg);
+  box-shadow: 0 0 24px rgba(126,184,201,.15);
+}
+
+/* Scene colours */
+.scene-a { background:radial-gradient(ellipse at 60% 30%,rgba(196,81,42,0.3) 0%,transparent 55%),radial-gradient(ellipse at 30% 70%,rgba(126,184,201,0.18) 0%,transparent 50%),linear-gradient(135deg,#0e0c0a 0%,#1a1008 100%); }
+.scene-b { background:radial-gradient(ellipse at 40% 40%,rgba(201,149,58,0.28) 0%,transparent 55%),linear-gradient(160deg,#0e100a 0%,#100e0a 100%); }
+.scene-c { background:radial-gradient(ellipse at 50% 30%,rgba(196,81,42,0.22) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(201,149,58,0.22) 0%,transparent 50%),linear-gradient(120deg,#0a0e0c 0%,#10080a 100%); }
+.scene-d { background:radial-gradient(ellipse at 30% 50%,rgba(126,184,201,0.22) 0%,transparent 55%),radial-gradient(ellipse at 75% 30%,rgba(201,149,58,0.18) 0%,transparent 50%),linear-gradient(200deg,#080a10 0%,#0e0a08 100%); }
+.scene-e { background:radial-gradient(ellipse at 50% 20%,rgba(196,81,42,0.28) 0%,transparent 55%),radial-gradient(ellipse at 30% 80%,rgba(126,184,201,0.18) 0%,transparent 50%),linear-gradient(140deg,#100808 0%,#0a0810 100%); }
+.scene-f { background:radial-gradient(ellipse at 60% 60%,rgba(201,149,58,0.25) 0%,transparent 55%),radial-gradient(ellipse at 25% 25%,rgba(126,184,201,0.15) 0%,transparent 50%),linear-gradient(110deg,#0a100a 0%,#100a0a 100%); }
+
+.ss { position:absolute;border:1px solid;animation:floatShape var(--d,8s) ease-in-out infinite;animation-delay:var(--dl,0s); }
+.sg { position:absolute;animation:spinSlow var(--d,20s) linear infinite; }
+.so { position:absolute;animation:orbit var(--d,12s) linear infinite; }
+
+/* Who we serve */
+.serve-section { padding:8rem 5rem; }
+.serve-intro { max-width:560px; }
+.serve-list-grid {
+  display: grid; grid-template-columns:repeat(4,1fr); gap:2px;
+  background:rgba(240,232,216,.04); margin-top:4rem;
+}
+.serve-list-item {
+  background:var(--night);padding:2.5rem 2rem;
+  display:flex;align-items:flex-start;gap:1rem;
+  border:1px solid transparent; transition:all .3s;
+}
+.serve-list-item::before { content:'';width:.38rem;height:.38rem;background:var(--orange);border-radius:50%;flex-shrink:0;margin-top:.4rem;transition:transform .3s; }
+.serve-list-item:hover { background:var(--dusk);border-color:rgba(126,184,201,.1); }
+.serve-list-item:hover::before { transform:scale(1.6); }
+.serve-list-item span { font-size:.72rem;line-height:1.7;color:var(--muted-lt);transition:color .3s; }
+.serve-list-item:hover span { color:var(--cream); }
+
+@media(max-width:1024px){
+  .svc-hero__content { padding:3rem 2.5rem; }
+  .svc-grid-wrap { padding:3rem 2.5rem; }
+  .svc-grid { grid-template-columns:1fr; }
+  .svc-card { min-height:360px; }
+  .serve-section { padding:5rem 2.5rem; }
+  .serve-list-grid { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:640px){
+  .serve-list-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="cur"></div>
+
+<nav class="nav">
+  <a class="nav__logo" href="index.html">Vitrine <em>Taj</em></a>
+  <div class="nav__links">
+    <a class="nav__link" href="about.html">Our Story</a>
+    <a class="nav__link" href="services.html">What We Create</a>
+    <a class="nav__link" href="process.html">Process</a>
+    <a class="nav__link" href="contact.html">Contact</a>
+  </div>
+  <a class="nav__cta" href="contact.html">Start a Project</a>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav__drawer">
+  <a href="index.html">Home</a>
+  <a href="about.html">Our Story</a>
+  <a href="services.html">What We Create</a>
+  <a href="process.html">Process</a>
+  <a href="contact.html">Start a Project</a>
+</div>
+
+<section class="svc-hero">
+  <div class="svc-hero__bg">
+    <div class="svc-hero__shape" style="width:200px;height:200px;top:10%;left:5%;border-color:rgba(196,81,42,0.25);--d:11s;--r:10deg;"></div>
+    <div class="svc-hero__shape" style="width:110px;height:110px;border-radius:50%;top:55%;left:72%;border-color:rgba(201,149,58,0.3);--d:8s;--dl:-2s;"></div>
+    <div class="svc-hero__shape" style="width:70px;height:70px;top:78%;left:20%;border-color:rgba(126,184,201,0.35);--d:9s;--dl:-4s;--r:45deg;"></div>
+    <div class="svc-hero__gear" style="width:160px;height:160px;top:15%;left:60%;--d:30s;">
+      <div style="position:absolute;inset:15%;border-radius:50%;border:1.5px solid rgba(196,81,42,0.3);"></div>
+      <div style="position:absolute;top:50%;left:50%;width:100%;height:1.5px;background:rgba(196,81,42,0.3);transform-origin:left center;margin-top:-.75px;transform:rotate(0deg)"></div>
+      <div style="position:absolute;top:50%;left:50%;width:100%;height:1.5px;background:rgba(196,81,42,0.3);transform-origin:left center;margin-top:-.75px;transform:rotate(72deg)"></div>
+      <div style="position:absolute;top:50%;left:50%;width:100%;height:1.5px;background:rgba(196,81,42,0.3);transform-origin:left center;margin-top:-.75px;transform:rotate(144deg)"></div>
+    </div>
+  </div>
+  <div class="svc-hero__grad"></div>
+  <div class="svc-hero__content">
+    <span class="svc-hero__label">What We Create</span>
+    <h1 class="svc-hero__title">Every display<br>built from <em>nothing.</em></h1>
+    <p class="svc-hero__sub">No templates. No catalogue parts. No off-the-shelf props. Every Vitrine Taj display is custom designed and custom built — from the first sketch to the final screw.</p>
+  </div>
+</section>
+
+<div class="svc-grid-wrap">
+  <div class="svc-grid">
+
+    <a href="contact.html" class="svc-card reveal">
+      <div class="svc-scene scene-a">
+        <div class="ss" style="width:120px;height:120px;top:10%;left:8%;border-color:rgba(126,184,201,0.4);--d:9s;--r:10deg;"></div>
+        <div class="ss" style="width:60px;height:60px;top:60%;left:65%;border-color:rgba(196,81,42,0.5);--d:7s;--dl:-3s;--r:30deg;"></div>
+        <div class="sg" style="width:110px;height:110px;top:35%;left:52%;--d:22s;">
+          <div style="position:absolute;inset:15%;border-radius:50%;border:2px solid var(--orange);"></div>
+          <div style="position:absolute;top:50%;left:50%;width:100%;height:2px;background:var(--orange);transform-origin:left center;margin-top:-1px;transform:rotate(0deg)"></div>
+          <div style="position:absolute;top:50%;left:50%;width:100%;height:2px;background:var(--orange);transform-origin:left center;margin-top:-1px;transform:rotate(60deg)"></div>
+          <div style="position:absolute;top:50%;left:50%;width:100%;height:2px;background:var(--orange);transform-origin:left center;margin-top:-1px;transform:rotate(120deg)"></div>
+        </div>
+      </div>
+      <div class="svc-icon">⚙️</div>
+      <div class="svc-content">
+        <span class="svc-num">001</span>
+        <div class="svc-title">Kinetic &amp; Automated Displays</div>
+        <div class="svc-desc">Custom-engineered motion mechanisms — rotating, oscillating, rising and falling — that bring your display to life around the clock. We design and build everything in-house, from the motor logic to the final finish.</div>
+        <span class="svc-tag">→ Motion Design · Automation · Electronics</span>
+      </div>
+    </a>
+
+    <a href="contact.html" class="svc-card reveal reveal-delay-1">
+      <div class="svc-scene scene-b">
+        <div class="ss" style="width:100px;height:100px;top:20%;left:12%;border-color:rgba(201,149,58,0.45);--d:8s;--r:20deg;"></div>
+        <div class="ss" style="width:55px;height:55px;border-radius:50%;top:58%;left:58%;border-color:rgba(126,184,201,0.4);--d:6s;--dl:-2s;"></div>
+        <div class="ss" style="width:150px;height:150px;top:30%;left:38%;border-color:rgba(201,149,58,0.15);--d:11s;--r:45deg;"></div>
+      </div>
+      <div class="svc-icon">🖨️</div>
+      <div class="svc-content">
+        <span class="svc-num">002</span>
+        <div class="svc-title">3D Printed Sculpture &amp; Props</div>
+        <div class="svc-desc">One-of-a-kind sculptural pieces fabricated specifically for your brand — from intricate geometric forms to figurative characters. Nothing off-the-shelf. Every piece designed to tell your story.</div>
+        <span class="svc-tag">→ Custom Fabrication · Sculpture · 3D Design</span>
+      </div>
+    </a>
+
+    <a href="contact.html" class="svc-card reveal">
+      <div class="svc-scene scene-c">
+        <div class="ss" style="width:180px;height:180px;top:5%;left:-30px;border-color:rgba(196,81,42,0.2);--d:12s;--r:5deg;"></div>
+        <div class="ss" style="width:80px;height:80px;border-radius:50%;top:50%;left:55%;border-color:rgba(201,149,58,0.4);--d:7s;--dl:-3s;"></div>
+        <div class="ss" style="width:45px;height:45px;top:72%;left:22%;border-color:rgba(126,184,201,0.35);--d:9s;--dl:-1s;--r:33deg;"></div>
+      </div>
+      <div class="svc-icon">🎨</div>
+      <div class="svc-content">
+        <span class="svc-num">003</span>
+        <div class="svc-title">Painted Art &amp; Illustration</div>
+        <div class="svc-desc">Hand-painted backdrops, illustrated scenes, and original artwork that give your display depth and atmosphere. A painterly touch that no screen or print can replicate.</div>
+        <span class="svc-tag">→ Fine Art · Hand-Painted · Illustration</span>
+      </div>
+    </a>
+
+    <a href="contact.html" class="svc-card reveal reveal-delay-1">
+      <div class="svc-scene scene-d">
+        <div class="ss" style="width:130px;height:130px;top:12%;left:15%;border-color:rgba(126,184,201,0.35);--d:10s;--r:15deg;"></div>
+        <div class="ss" style="width:70px;height:70px;border-radius:50%;top:55%;left:55%;border-color:rgba(201,149,58,0.45);--d:7s;--dl:-2s;"></div>
+      </div>
+      <div class="svc-icon">✨</div>
+      <div class="svc-content">
+        <span class="svc-num">004</span>
+        <div class="svc-title">Seasonal &amp; Themed Displays</div>
+        <div class="svc-desc">Holiday windows, launch campaigns, seasonal refreshes — complete themed experiences that keep your storefront feeling current and alive all year round.</div>
+        <span class="svc-tag">→ Seasonal · Campaign · Refresh</span>
+      </div>
+    </a>
+
+    <a href="contact.html" class="svc-card reveal">
+      <div class="svc-scene scene-e">
+        <div class="ss" style="width:100px;height:100px;top:15%;left:10%;border-color:rgba(196,81,42,0.35);--d:10s;--r:8deg;"></div>
+        <div class="ss" style="width:65px;height:65px;top:60%;left:60%;border-color:rgba(126,184,201,0.3);border-radius:50%;--d:7s;--dl:-3s;"></div>
+      </div>
+      <div class="svc-icon">📐</div>
+      <div class="svc-content">
+        <span class="svc-num">005</span>
+        <div class="svc-title">Concept &amp; Brand Storytelling</div>
+        <div class="svc-desc">Before anything is built, we develop the narrative. What's the mood? The palette? The one thing a passerby should feel? We art-direct the full concept so every element works together.</div>
+        <span class="svc-tag">→ Art Direction · Concept · Brand</span>
+      </div>
+    </a>
+
+    <a href="contact.html" class="svc-card reveal reveal-delay-1">
+      <div class="svc-scene scene-f">
+        <div class="sg" style="width:90px;height:90px;top:20%;left:20%;--d:18s;">
+          <div style="position:absolute;inset:15%;border-radius:50%;border:1.5px solid var(--blue);"></div>
+          <div style="position:absolute;top:50%;left:50%;width:100%;height:1.5px;background:var(--blue);transform-origin:left center;margin-top:-.75px;transform:rotate(0deg)"></div>
+          <div style="position:absolute;top:50%;left:50%;width:100%;height:1.5px;background:var(--blue);transform-origin:left center;margin-top:-.75px;transform:rotate(90deg)"></div>
+        </div>
+        <div class="ss" style="width:80px;height:80px;border-radius:50%;top:48%;left:52%;border-color:rgba(201,149,58,0.4);--d:8s;--dl:-2s;"></div>
+      </div>
+      <div class="svc-icon">🔧</div>
+      <div class="svc-content">
+        <span class="svc-num">006</span>
+        <div class="svc-title">Full Install &amp; Setup</div>
+        <div class="svc-desc">We handle delivery, installation, and testing ourselves. Your display arrives turnkey — everything secured, motion tested, and ready to run. Maintenance and seasonal swap-outs available.</div>
+        <span class="svc-tag">→ Installation · Maintenance · Support</span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- WHO WE SERVE -->
+<section class="serve-section">
+  <div class="reveal serve-intro">
+    <span class="label">Who We Serve</span>
+    <h2 class="heading-lg" style="margin-top:1rem;">Made for<br><em>independent shops.</em></h2>
+    <p style="font-size:.82rem;line-height:2.1;color:var(--muted-lt);margin-top:1.5rem;">We work exclusively with small and independent businesses — the kind where the owner actually cares about every customer who walks through the door.</p>
+  </div>
+  <div class="serve-list-grid" style="margin-top:4rem;">
+    <div class="serve-list-item reveal"><span>Clothing &amp; fashion boutiques</span></div>
+    <div class="serve-list-item reveal reveal-delay-1"><span>Florists &amp; plant shops</span></div>
+    <div class="serve-list-item reveal reveal-delay-2"><span>Jewelry &amp; accessories</span></div>
+    <div class="serve-list-item reveal reveal-delay-3"><span>Bookshops &amp; gift stores</span></div>
+    <div class="serve-list-item reveal"><span>Bakeries &amp; food retailers</span></div>
+    <div class="serve-list-item reveal reveal-delay-1"><span>Spas, studios &amp; wellness</span></div>
+    <div class="serve-list-item reveal reveal-delay-2"><span>Homeware &amp; interiors</span></div>
+    <div class="serve-list-item reveal reveal-delay-3"><span>Any shop with a great story to tell</span></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__logo">Vitrine <em>Taj</em></div>
+  <div class="footer__links">
+    <a href="about.html">Our Story</a>
+    <a href="services.html">Services</a>
+    <a href="process.html">Process</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="footer__copy">© 2026 Taj LLC</div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
