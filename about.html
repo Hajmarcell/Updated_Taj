@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Story — Vitrine Taj</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+/* HERO — orange background with big black type */
+.about-hero {
+  background: var(--orange);
+  min-height: 80vh; padding: calc(var(--nav-h) + 5rem) 5rem 7rem;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  position: relative; overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% 94%, 0 100%);
+}
+.about-hero__ghost {
+  position: absolute; font-family: var(--serif); font-size: 36vw;
+  font-weight: 700; color: rgba(0,0,0,.07); line-height: 1;
+  top: 50%; right: -5rem; transform: translateY(-50%);
+  pointer-events: none; letter-spacing: -.04em;
+}
+.about-hero__label {
+  font-size: .48rem; letter-spacing: .45em; text-transform: uppercase;
+  color: rgba(240,232,216,.7); display: block; margin-bottom: 2rem;
+  opacity: 0; animation: riseIn .7s .3s forwards;
+}
+.about-hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(4rem, 9vw, 13rem);
+  font-weight: 700; line-height: .85; letter-spacing: -.04em;
+  color: var(--cream);
+  opacity: 0; animation: riseIn .9s .5s forwards;
+}
+.about-hero h1 em { font-style: italic; font-weight: 400; color: rgba(240,232,216,.65); }
+
+/* Origin story — editorial column */
+.origin {
+  padding: 9rem 5rem;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10rem; align-items: start;
+  background: var(--ink);
+  position: relative; z-index: 2;
+  margin-top: -3vw;
+}
+.origin__label { font-size:.48rem;letter-spacing:.45em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:1.5rem; }
+.origin__title {
+  font-family: var(--serif);
+  font-size: clamp(2rem,3.5vw,4.5rem); font-weight: 400; line-height: 1.0;
+}
+.origin__title em { font-style:italic; color:var(--gold); }
+.origin__body { font-size:.85rem;line-height:2.2;color:var(--muted-lt);margin-top:2.5rem; }
+.origin__body p+p { margin-top:1.6rem; }
+.origin__body strong { color:var(--cream);font-weight:400; }
+
+/* Pull quote — large italic */
+.big-quote {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem,3vw,4rem);
+  font-style: italic; font-weight: 400;
+  line-height: 1.2; color: var(--cream);
+  padding-left: 3rem;
+  border-left: 4px solid var(--orange);
+}
+.big-quote-attr {
+  font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);margin-top:1.5rem;padding-left:3rem;display:block;
+}
+
+/* Europe section — inverted, orange block */
+.europe {
+  background: var(--orange);
+  padding: 9rem 5rem;
+  position: relative; overflow: hidden;
+  clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+  margin: -3vw 0; z-index: 3;
+}
+.europe__ghost {
+  position: absolute; font-family: var(--serif); font-size: 25vw;
+  font-weight: 700; color: rgba(0,0,0,.07); line-height: 1;
+  top: 50%; right: -3rem; transform: translateY(-50%);
+  pointer-events: none;
+}
+.europe__label { font-size:.48rem;letter-spacing:.45em;text-transform:uppercase;color:rgba(240,232,216,.6);display:block;margin-bottom:2rem; }
+.europe h2 {
+  font-family: var(--serif);
+  font-size: clamp(3rem,6vw,9rem); font-weight: 700;
+  letter-spacing: -.03em; line-height: .88; color: var(--cream);
+  margin-bottom: 4rem;
+}
+.europe h2 em { font-style:italic;font-weight:400;color:rgba(240,232,216,.6); }
+.europe__body {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+  font-size:.82rem; line-height:2.1; color:rgba(240,232,216,.82);
+}
+.europe__body p+p { margin-top:1.5rem; }
+.europe__body strong { color:var(--cream);font-weight:400; }
+
+/* Values */
+.values {
+  background: var(--ink-deep);
+  padding: 9rem 5rem;
+  position: relative; z-index: 2; margin-top: -3vw;
+}
+.values__grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; background: rgba(240,232,216,.04);
+  margin-top: 4rem;
+}
+.val-card {
+  padding: 4rem;
+  border: 1px solid rgba(240,232,216,.06);
+  position: relative; overflow: hidden;
+  transition: background .3s;
+}
+.val-card:hover { background: rgba(240,232,216,.02); }
+.val-card::after {
+  content:''; position:absolute; bottom:0;left:0;right:0;height:3px;
+  background:var(--orange); transform:scaleX(0);
+  transition:transform .4s var(--ease); transform-origin:left;
+}
+.val-card:hover::after { transform:scaleX(1); }
+.val-num {
+  font-family: var(--serif); font-size: 6rem; font-weight: 700;
+  color: rgba(240,232,216,.05); line-height: 1; margin-bottom: -.5rem;
+  letter-spacing: -.04em;
+}
+.val-title { font-family:var(--serif);font-size:clamp(1.3rem,2vw,2rem);font-weight:400;margin-bottom:1rem;line-height:1.1; }
+.val-body { font-size:.72rem;line-height:2;color:var(--muted-lt); }
+.val-body strong { color:var(--cream);font-weight:400; }
+
+/* Tags */
+.tags { display:flex;flex-wrap:wrap;gap:.8rem;margin-top:3rem; }
+.tag { font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;padding:.5rem 1.2rem;border:1px solid rgba(240,232,216,.12);color:var(--muted-lt);transition:all .3s; }
+.tag:hover { border-color:var(--orange);color:var(--cream); }
+
+@media(max-width:1024px){
+  .about-hero { padding:calc(var(--nav-h) + 3rem) 2.5rem 5rem; clip-path:none; }
+  .origin { grid-template-columns:1fr;gap:4rem;padding:6rem 2.5rem;margin-top:0; }
+  .europe { padding:6rem 2.5rem;clip-path:none;margin:0; }
+  .europe__body { grid-template-columns:1fr;gap:0; }
+  .values { padding:6rem 2.5rem;margin-top:0; }
+  .values__grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="cur"></div>
+
+<nav class="nav nav--orange">
+  <a class="nav__logo" href="index.html">Vitrine <em>Taj</em></a>
+  <div class="nav__links">
+    <a class="nav__link" href="about.html">Our Story</a>
+    <a class="nav__link" href="services.html">What We Create</a>
+    <a class="nav__link" href="process.html">Process</a>
+    <a class="nav__link" href="contact.html">Contact</a>
+  </div>
+  <a class="nav__cta btn" href="contact.html">Start a Project</a>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav__drawer">
+  <a href="index.html">Home</a><a href="about.html">Our Story</a>
+  <a href="services.html">What We Create</a><a href="process.html">Process</a>
+  <a href="contact.html">Start a Project</a>
+</div>
+
+<section class="about-hero">
+  <div class="about-hero__ghost">V</div>
+  <span class="about-hero__label">Our Story</span>
+  <h1>Built by two<br>engineers who<br><em>fell in love</em><br>with a window.</h1>
+</section>
+
+<section class="origin">
+  <div class="reveal">
+    <span class="origin__label">Who We Are</span>
+    <h2 class="origin__title">Engineering &amp; art,<br><em>together.</em></h2>
+    <div class="origin__body">
+      <p>We're <strong>a couple of engineers and artists</strong> — one a painter, both tinkerers — who spent years designing, 3D printing, and building things from the ground up just for the joy of it.</p>
+      <p>Between us we bring together <strong>mechanical engineering, fine art painting, 3D fabrication, and client-facing work</strong>. We know how to design something beautiful and build it so it actually works.</p>
+      <p>Vitrine Taj is where all of that comes together — <strong>the intersection of engineering and art</strong>, applied to the most overlooked real estate in retail: the shop window.</p>
+    </div>
+    <div class="tags">
+      <span class="tag">Mechanical Engineering</span>
+      <span class="tag">Fine Art &amp; Painting</span>
+      <span class="tag">3D Fabrication</span>
+      <span class="tag">Motion &amp; Automation</span>
+      <span class="tag">100% Custom</span>
+    </div>
+  </div>
+  <div class="reveal r2">
+    <div class="big-quote">"Your window is your loudest voice on the street — and most shops are whispering."</div>
+    <span class="big-quote-attr">— Vitrine Taj</span>
+  </div>
+</section>
+
+<section class="europe">
+  <div class="europe__ghost">EU</div>
+  <span class="europe__label reveal">The Moment Everything Changed</span>
+  <h2 class="reveal">Travelling<br>Europe,<br><em>something<br>stopped us.</em></h2>
+  <div class="europe__body">
+    <div class="reveal">
+      <p>From Paris to Florence, Amsterdam to Lisbon — everywhere we went, <strong>small independent boutiques had these incredible, living window displays</strong> that made you feel something before you stepped inside.</p>
+      <p>Wonder. Curiosity. That irresistible pull to get closer. Sometimes you'd stand for several minutes just to figure out how it worked.</p>
+    </div>
+    <div class="reveal r2">
+      <p>We came home and couldn't stop thinking: <strong>why don't shops here feel like that?</strong> The craft, the storytelling, the theatre of a beautiful window — it seemed like a lost art.</p>
+      <p>So we decided to revive it. <strong>Vitrine Taj exists to bring that magic back — one window at a time.</strong></p>
+    </div>
+  </div>
+</section>
+
+<section class="values">
+  <div class="reveal">
+    <span class="eyebrow">What We Believe</span>
+    <h2 class="display-md" style="margin-top:.5rem;">Things we refuse to<br><em>compromise on.</em></h2>
+  </div>
+  <div class="values__grid">
+    <div class="val-card reveal">
+      <div class="val-num">01</div>
+      <div class="val-title">Everything custom. Always.</div>
+      <div class="val-body"><strong>Every display is designed and built from scratch.</strong> We will never sell you a template or a pre-made prop. That's not a selling point — it's the entire point.</div>
+    </div>
+    <div class="val-card reveal r1">
+      <div class="val-num">02</div>
+      <div class="val-title">The window is a stage.</div>
+      <div class="val-body">We treat every window like a theatre set — <strong>every element serves the story.</strong> Colour, light, motion, texture: nothing is accidental.</div>
+    </div>
+    <div class="val-card reveal r2">
+      <div class="val-num">03</div>
+      <div class="val-title">Small shops deserve great design.</div>
+      <div class="val-body">The best boutiques in Paris don't have million-dollar budgets — they have passion and craft. <strong>We exist to serve that kind of shop.</strong></div>
+    </div>
+    <div class="val-card reveal r3">
+      <div class="val-num">04</div>
+      <div class="val-title">Curiosity is the point.</div>
+      <div class="val-body">The best displays make people <strong>stop, tilt their head, and wonder.</strong> We design for that moment of pause. That's what we're chasing every time.</div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__logo">Vitrine <em>Taj</em></div>
+  <div class="footer__links">
+    <a href="about.html">Our Story</a><a href="services.html">Services</a>
+    <a href="process.html">Process</a><a href="contact.html">Contact</a>
+  </div>
+  <div class="footer__copy">© 2026 Taj LLC</div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+// Nav switches from orange to dark as you scroll off the hero
+const nav = document.querySelector('.nav');
+const hero = document.querySelector('.about-hero');
+if (nav && hero) {
+  const obs = new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) { nav.classList.add('nav--orange'); nav.classList.remove('nav--bg'); }
+    else { nav.classList.remove('nav--orange'); nav.classList.add('nav--bg'); }
+  }, { threshold: 0.1 });
+  obs.observe(hero);
+}
+</script>
+</body>
+</html>

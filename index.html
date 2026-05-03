@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Vitrine Taj — Fully custom window displays for small shops. Kinetic motion, 3D-printed sculpture, and original hand-painted art.">
+<title>Vitrine Taj — Custom Window Displays</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+
+/* ══════════════════════════════════════════
+   HERO — Typographic statement, full-bleed
+   Window is inset, type dominates
+══════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: var(--nav-h) 0 0;
+}
+
+/* giant ghosted background word */
+.hero__ghost {
+  position: absolute;
+  font-family: var(--serif);
+  font-size: 38vw; font-weight: 700;
+  line-height: 1; letter-spacing: -.05em;
+  color: rgba(240,232,216,.018);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  white-space: nowrap; pointer-events: none;
+  z-index: 0; user-select: none;
+}
+
+/* construction lines */
+.hero .grid-lines { z-index: 0; }
+
+/* HERO LEFT: pure type */
+.hero__left {
+  padding: 6rem 4rem 6rem 5rem;
+  position: relative; z-index: 2;
+}
+
+.hero__eyebrow {
+  display: flex; align-items: center; gap: .8rem;
+  font-size: .48rem; letter-spacing: .45em; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 3rem;
+  opacity: 0; animation: riseIn .7s .2s forwards;
+}
+.hero__eyebrow::before { content:''; width:2.5rem; height:1px; background:var(--blue); }
+
+/* The main headline — poster-sized */
+.hero__title {
+  font-family: var(--serif);
+  font-size: clamp(4.5rem, 9vw, 11rem);
+  font-weight: 700; line-height: .88;
+  letter-spacing: -.03em;
+  opacity: 0; animation: riseIn .9s .4s forwards;
+}
+.hero__title em {
+  font-style: italic; font-weight: 400;
+  color: var(--orange); display: block;
+}
+
+/* Orange rule under title */
+.hero__rule {
+  width: 4rem; height: 4px;
+  background: var(--orange);
+  margin: 3rem 0;
+  opacity: 0; animation: riseIn .7s .65s forwards;
+}
+
+.hero__sub {
+  font-size: .82rem; line-height: 2.1;
+  color: var(--muted-lt); max-width: 400px;
+  opacity: 0; animation: riseIn .9s .75s forwards;
+}
+.hero__sub strong { color: var(--cream); font-weight: 400; }
+
+.hero__actions {
+  margin-top: 3rem; display: flex; gap: 1.5rem; align-items: center;
+  opacity: 0; animation: riseIn .9s .95s forwards;
+}
+
+/* HERO RIGHT: window scene */
+.hero__right {
+  height: 100%; min-height: 100vh;
+  position: relative; overflow: hidden;
+  background: var(--ink-deep);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* atmospheric background */
+.hero__right-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(74,143,163,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 85%, rgba(196,81,42,0.16) 0%, transparent 55%),
+    var(--ink-deep);
+}
+
+/* floating shapes */
+.hs { position:absolute; border:1px solid; animation:floatShape var(--d,8s) ease-in-out infinite; animation-delay:var(--dl,0s); }
+
+/* centred window */
+.w-frame {
+  position: relative; z-index: 2;
+  width: min(75%, 380px); aspect-ratio: 3/4;
+  border: 8px solid #1e1710;
+  box-shadow: 0 40px 120px rgba(0,0,0,.7), 0 0 0 1px rgba(201,149,58,.08);
+}
+.w-glass {
+  position: absolute; inset: 0; overflow: hidden;
+  background: linear-gradient(180deg, #060e10 0%, #08080e 45%, #0e0806 100%);
+}
+.w-glass::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:55%;
+  background:radial-gradient(ellipse at 50% 0%,rgba(74,143,163,.26) 0%,transparent 70%);
+}
+.w-glass::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:45%;
+  background:radial-gradient(ellipse at 50% 100%,rgba(196,81,42,.2) 0%,transparent 65%);
+}
+.w-bar-v { position:absolute;top:0;bottom:0;left:50%;width:7px;background:#1e1710;transform:translateX(-50%);z-index:3; }
+.w-bar-h { position:absolute;left:0;right:0;top:42%;height:7px;background:#1e1710;z-index:3; }
+
+/* shapes inside */
+.wi { position:absolute; border:1px solid; animation:floatShape var(--d,8s) ease-in-out infinite; animation-delay:var(--dl,0s); }
+.w-orbit-wrap { position:absolute;top:50%;left:50%;width:110px;height:110px;margin:-55px 0 0 -55px;animation:orbit 14s linear infinite;opacity:.4; }
+.w-orbit-dot { position:absolute;top:0;left:50%;width:5px;height:5px;background:var(--blue);border-radius:50%;margin-left:-2.5px;box-shadow:0 0 10px var(--blue); }
+.w-gear { position:absolute;animation:spinSlow 28s linear infinite;opacity:.28; }
+.w-gear-ring { position:absolute;inset:14%;border-radius:50%;border:1.5px solid var(--orange); }
+.w-gear-sp { position:absolute;top:50%;left:50%;width:100%;height:1.5px;background:var(--orange);transform-origin:left center;margin-top:-.75px; }
+.w-ref1 { position:absolute;top:0;left:14%;width:1.5px;height:100%;background:linear-gradient(to bottom,transparent,rgba(126,184,201,.08) 45%,transparent);transform:skew(-8deg); }
+.w-nameplate { position:absolute;bottom:5%;left:50%;transform:translateX(-50%);font-family:var(--serif);font-size:.85rem;letter-spacing:.5em;text-transform:uppercase;color:rgba(240,232,216,.3);white-space:nowrap;z-index:4;text-shadow:0 0 20px rgba(126,184,201,.25); }
+
+/* TICKER */
+.ticker {
+  background:var(--orange);
+  overflow:hidden; padding:.6rem 0; position:relative; z-index:10;
+}
+.ticker__track {
+  display:flex; white-space:nowrap; gap:2.5rem;
+  animation:tickerRoll 22s linear infinite;
+  font-size:.48rem; letter-spacing:.32em; text-transform:uppercase;
+  color:rgba(240,232,216,.95);
+}
+
+/* ══════════════════════════════════════════
+   STATEMENT SECTION
+   Full-width colored typography block
+══════════════════════════════════════════ */
+.statement {
+  background: var(--orange);
+  padding: 8rem 5rem;
+  position: relative; overflow: hidden;
+  clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+  margin: -3vw 0;
+  z-index: 5;
+}
+.statement__ghost {
+  position: absolute;
+  font-family: var(--serif); font-size: 28vw; font-weight: 700;
+  line-height: 1; color: rgba(0,0,0,.08);
+  top: 50%; right: -5rem; transform: translateY(-50%);
+  pointer-events: none; white-space: nowrap;
+}
+.statement__eyebrow {
+  font-size: .48rem; letter-spacing: .45em; text-transform: uppercase;
+  color: rgba(240,232,216,.65); display: block; margin-bottom: 2rem;
+}
+.statement__text {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 6vw, 8rem);
+  font-weight: 700; line-height: .88; letter-spacing: -.03em;
+  color: var(--cream);
+  max-width: 900px;
+}
+.statement__text em {
+  font-style: italic; font-weight: 400;
+  color: rgba(240,232,216,.65);
+}
+.statement__bottom {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-top: 4rem; gap: 3rem; flex-wrap: wrap;
+}
+.statement__sub {
+  font-size: .82rem; line-height: 2.1;
+  color: rgba(240,232,216,.8); max-width: 440px;
+}
+.statement__sub strong { color: var(--cream); font-weight: 400; }
+
+/* ══════════════════════════════════════════
+   SERVICES — Bold numbered grid
+══════════════════════════════════════════ */
+.services {
+  padding: 10rem 5rem 8rem;
+  background: var(--ink-deep);
+  position: relative; z-index: 4;
+}
+
+.services__header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 4rem; margin-bottom: 6rem;
+}
+.services__title-wrap { flex: 1; }
+.services__intro {
+  font-size: .78rem; line-height: 2.1; color: var(--muted-lt);
+  max-width: 360px; margin-top: auto; padding-top: 1rem;
+  flex: 0 0 360px;
+}
+.services__intro strong { color: var(--cream); font-weight: 400; }
+
+/* Service items — horizontal rows, number huge */
+.svc-list { display: flex; flex-direction: column; }
+.svc-item {
+  display: grid; grid-template-columns: 8rem 1fr 1fr auto;
+  gap: 3rem; align-items: center;
+  padding: 3rem 0;
+  border-top: 1px solid rgba(240,232,216,.07);
+  transition: background .3s; position: relative;
+  cursor: none;
+}
+.svc-item:last-child { border-bottom: 1px solid rgba(240,232,216,.07); }
+.svc-item::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--orange);
+  transform: scaleY(0); transition: transform .4s var(--ease);
+  transform-origin: bottom;
+}
+.svc-item:hover { background: rgba(240,232,216,.02); }
+.svc-item:hover::before { transform: scaleY(1); }
+
+.svc-num {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 6vw, 7rem);
+  font-weight: 700; line-height: 1;
+  color: rgba(240,232,216,.07);
+  transition: color .4s;
+}
+.svc-item:hover .svc-num { color: var(--orange); }
+
+.svc-name {
+  font-family: var(--serif); font-size: clamp(1.2rem, 2vw, 2rem);
+  font-weight: 400; line-height: 1.1;
+  transition: color .3s;
+}
+.svc-item:hover .svc-name { color: var(--orange); }
+
+.svc-desc {
+  font-size: .68rem; line-height: 1.95; color: var(--muted-lt);
+}
+
+.svc-tag {
+  font-size: .45rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--blue); white-space: nowrap;
+  opacity: 0; transform: translateX(8px);
+  transition: opacity .3s, transform .3s;
+}
+.svc-item:hover .svc-tag { opacity: 1; transform: translateX(0); }
+
+/* ══════════════════════════════════════════
+   PROCESS STRIP — 4 steps horizontal
+══════════════════════════════════════════ */
+.process-strip {
+  background: var(--ink);
+  padding: 8rem 5rem;
+  position: relative; overflow: hidden;
+}
+.process-strip .grid-lines { opacity: .6; }
+.process-steps {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 2px; background: rgba(240,232,216,.04);
+  margin-top: 4rem;
+}
+.ps {
+  background: var(--ink); padding: 3.5rem 2.5rem;
+  position: relative; overflow: hidden;
+  border: 1px solid transparent;
+  transition: background .3s, border-color .3s;
+}
+.ps:hover { background: var(--ink-deep); border-color: rgba(196,81,42,.25); }
+.ps::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:var(--orange); transform:scaleX(0);
+  transition:transform .4s var(--ease); transform-origin:left;
+}
+.ps:hover::after { transform:scaleX(1); }
+.ps-big-num {
+  font-family: var(--serif);
+  font-size: 8rem; font-weight: 700; line-height: 1;
+  color: rgba(240,232,216,.05);
+  position: absolute; bottom: -1rem; right: 1rem;
+  letter-spacing: -.04em;
+  transition: color .3s;
+}
+.ps:hover .ps-big-num { color: rgba(196,81,42,.1); }
+.ps-label {
+  font-size: .45rem; letter-spacing: .35em; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 1.2rem; display: block;
+}
+.ps-title {
+  font-family: var(--serif); font-size: 1.4rem;
+  font-weight: 400; margin-bottom: 1rem; line-height: 1.1;
+}
+.ps-body {
+  font-size: .65rem; line-height: 1.95; color: var(--muted-lt);
+  position: relative; z-index: 1;
+}
+
+/* ══════════════════════════════════════════
+   STATS — Full-bleed orange with big numbers
+══════════════════════════════════════════ */
+.stats-block {
+  background: var(--orange);
+  padding: 7rem 5rem;
+  position: relative; overflow: hidden;
+}
+.stats-block__ghost {
+  position: absolute; font-family: var(--serif); font-size: 30vw;
+  font-weight: 700; color: rgba(0,0,0,.06);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  pointer-events: none; white-space: nowrap;
+}
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 0; border: 1px solid rgba(0,0,0,.1);
+}
+.stat-cell {
+  padding: 4rem 3rem; text-align: center;
+  border-right: 1px solid rgba(0,0,0,.1);
+  position: relative;
+}
+.stat-cell:last-child { border-right: none; }
+.stat-num {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem,6vw,7rem); font-weight: 700;
+  line-height: 1; color: var(--cream); letter-spacing: -.02em;
+}
+.stat-label {
+  font-size: .5rem; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(240,232,216,.7); margin-top: .8rem; display: block;
+}
+
+/* ══════════════════════════════════════════
+   CTA — Dark closing section
+══════════════════════════════════════════ */
+.home-cta {
+  background: var(--ink-deep);
+  padding: 9rem 5rem;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 4rem; align-items: center;
+  position: relative; overflow: hidden;
+}
+.home-cta__ghost {
+  position: absolute; font-family: var(--serif); font-size: 22vw;
+  font-weight: 700; letter-spacing: -.05em; line-height: 1;
+  color: rgba(240,232,216,.02);
+  bottom: -3rem; right: -2rem; pointer-events: none; white-space: nowrap;
+}
+.home-cta h2 {
+  font-family: var(--serif);
+  font-size: clamp(3rem,6vw,8rem); font-weight: 700;
+  letter-spacing: -.03em; line-height: .9;
+}
+.home-cta h2 em { font-style: italic; font-weight: 400; color: var(--orange); }
+.home-cta__actions { display:flex; flex-direction:column; gap:1rem; align-items:flex-end; flex-shrink:0; }
+
+/* RESPONSIVE */
+@media(max-width:1024px) {
+  .hero { grid-template-columns:1fr; }
+  .hero__right { height:70vw; min-height:320px; }
+  .hero__left { padding:4rem 2.5rem 3rem; }
+  .statement { padding:6rem 2.5rem; clip-path:none; margin:0; }
+  .services { padding:6rem 2.5rem; }
+  .services__header { flex-direction:column; gap:2rem; }
+  .services__intro { flex:none; max-width:100%; }
+  .svc-item { grid-template-columns:4rem 1fr; gap:1.5rem 2rem; grid-template-rows:auto auto auto; }
+  .svc-desc { grid-column:2; }
+  .svc-tag { grid-column:2; opacity:1; transform:none; }
+  .process-strip { padding:5rem 2.5rem; }
+  .process-steps { grid-template-columns:1fr 1fr; }
+  .stats-block { padding:5rem 2.5rem; }
+  .stats-grid { grid-template-columns:1fr 1fr; }
+  .stat-cell { border-bottom:1px solid rgba(0,0,0,.1); }
+  .home-cta { grid-template-columns:1fr; gap:2.5rem; padding:6rem 2.5rem; }
+  .home-cta__actions { align-items:flex-start; }
+}
+@media(max-width:640px) {
+  .hero__title { font-size:clamp(3.5rem,12vw,5rem); }
+  .process-steps { grid-template-columns:1fr; }
+  .stats-grid { grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="cur"></div>
+
+<nav class="nav">
+  <a class="nav__logo" href="index.html">Vitrine <em>Taj</em></a>
+  <div class="nav__links">
+    <a class="nav__link" href="about.html">Our Story</a>
+    <a class="nav__link" href="services.html">What We Create</a>
+    <a class="nav__link" href="process.html">Process</a>
+    <a class="nav__link" href="contact.html">Contact</a>
+  </div>
+  <a class="nav__cta btn" href="contact.html">Start a Project</a>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav__drawer">
+  <a href="index.html">Home</a>
+  <a href="about.html">Our Story</a>
+  <a href="services.html">What We Create</a>
+  <a href="process.html">Process</a>
+  <a href="contact.html">Start a Project</a>
+</div>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="grid-lines"></div>
+  <div class="hero__ghost">W</div>
+
+  <div class="hero__left">
+    <p class="hero__eyebrow">Bespoke Window Displays</p>
+    <h1 class="hero__title">
+      Make<br>them<br>stop.<br>
+      <em>Look.</em>
+    </h1>
+    <div class="hero__rule"></div>
+    <p class="hero__sub">
+      <strong>Vitrine Taj</strong> designs and builds <strong>fully custom window displays</strong> for small shops — kinetic motion, 3D-printed sculpture, and hand-painted art. <strong>Nothing off the shelf. Ever.</strong>
+    </p>
+    <div class="hero__actions">
+      <a href="contact.html" class="btn btn--fill"><span>Start a Project</span></a>
+      <a href="services.html" class="btn btn--text">What We Create →</a>
+    </div>
+  </div>
+
+  <div class="hero__right">
+    <div class="hero__right-bg"></div>
+    <!-- floating bg shapes -->
+    <div class="hs" style="width:180px;height:180px;top:8%;left:5%;border-color:rgba(126,184,201,0.2);--d:10s;--r:10deg;"></div>
+    <div class="hs" style="width:80px;height:80px;top:70%;left:75%;border-color:rgba(196,81,42,0.35);--d:8s;--dl:-3s;--r:33deg;"></div>
+    <div class="hs" style="width:55px;height:55px;top:78%;left:8%;border-color:rgba(126,184,201,0.25);--d:9s;--dl:-5s;--r:20deg;"></div>
+
+    <!-- centred window -->
+    <div class="w-frame">
+      <div class="w-glass">
+        <div class="wi" style="width:50px;height:50px;top:14%;left:10%;border-color:rgba(126,184,201,.5);--d:8s;--r:12deg;"></div>
+        <div class="wi" style="width:70px;height:70px;border-radius:50%;top:55%;left:55%;border-color:rgba(201,149,58,.4);--d:6s;--dl:-2s;"></div>
+        <div class="wi" style="width:35px;height:35px;top:68%;left:16%;border-color:rgba(196,81,42,.55);--d:9s;--dl:-4s;--r:45deg;"></div>
+        <div class="w-orbit-wrap">
+          <div class="w-orbit-dot"></div>
+        </div>
+        <div class="w-gear" style="width:80px;height:80px;top:28%;left:30%;">
+          <div class="w-gear-ring"></div>
+          <div class="w-gear-sp" style="transform:rotate(0deg)"></div>
+          <div class="w-gear-sp" style="transform:rotate(60deg)"></div>
+          <div class="w-gear-sp" style="transform:rotate(120deg)"></div>
+        </div>
+        <div class="w-ref1"></div>
+      </div>
+      <div class="w-bar-v"></div>
+      <div class="w-bar-h"></div>
+      <div class="w-nameplate">La Boutique</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker__track">
+    <span>100% Custom Designed</span><span>·</span>
+    <span>3D Printed Sculpture</span><span>·</span>
+    <span>Kinetic Motion</span><span>·</span>
+    <span>Hand-Painted Art</span><span>·</span>
+    <span>Built for Small Shops</span><span>·</span>
+    <span>Nothing Off The Shelf</span><span>·</span>
+    <span>100% Custom Designed</span><span>·</span>
+    <span>3D Printed Sculpture</span><span>·</span>
+    <span>Kinetic Motion</span><span>·</span>
+    <span>Hand-Painted Art</span><span>·</span>
+    <span>Built for Small Shops</span><span>·</span>
+    <span>Nothing Off The Shelf</span><span>·</span>
+  </div>
+</div>
+
+<!-- ═══════════ STATEMENT ═══════════ -->
+<section class="statement">
+  <div class="statement__ghost">TAJ</div>
+  <span class="statement__eyebrow reveal">The Vitrine Taj Belief</span>
+  <div class="statement__text reveal">
+    Your window is your loudest<br>voice on the street —<br><em>use it.</em>
+  </div>
+  <div class="statement__bottom">
+    <p class="statement__sub reveal">
+      We build <strong>fully custom window displays</strong> for independent shops — kinetic motion, 3D-printed sculpture, and hand-painted art, conceived and made from scratch just for you.
+    </p>
+    <a href="about.html" class="btn btn--dark reveal"><span>Our Story</span></a>
+  </div>
+</section>
+
+<!-- ═══════════ SERVICES ═══════════ -->
+<section class="services">
+  <div class="services__header">
+    <div class="services__title-wrap reveal">
+      <span class="eyebrow">What We Create</span>
+      <h2 class="display-lg">Six ways<br>to stop<br><em>traffic.</em></h2>
+    </div>
+    <p class="services__intro reveal r2">
+      Every service is fully custom — we don't work from templates or catalogues. <strong>Each display is designed and built from scratch</strong> for your shop and your shop alone.
+    </p>
+  </div>
+
+  <div class="svc-list">
+    <div class="svc-item reveal">
+      <div class="svc-num">01</div>
+      <div class="svc-name">Kinetic &amp;<br>Automated Displays</div>
+      <div class="svc-desc">Custom-engineered motion — rotating, oscillating, rising and falling. Built in-house from the motor logic to the final finish.</div>
+      <div class="svc-tag">Motion · Automation →</div>
+    </div>
+    <div class="svc-item reveal r1">
+      <div class="svc-num">02</div>
+      <div class="svc-name">3D Printed<br>Sculpture &amp; Props</div>
+      <div class="svc-desc">One-of-a-kind sculptural pieces — from geometric forms to figurative characters. Nothing off-the-shelf. Every piece tells your story.</div>
+      <div class="svc-tag">Fabrication · Sculpture →</div>
+    </div>
+    <div class="svc-item reveal r2">
+      <div class="svc-num">03</div>
+      <div class="svc-name">Painted Art &amp;<br>Illustration</div>
+      <div class="svc-desc">Hand-painted backdrops and original artwork that give your display depth no screen or print can replicate.</div>
+      <div class="svc-tag">Fine Art · Painting →</div>
+    </div>
+    <div class="svc-item reveal r3">
+      <div class="svc-num">04</div>
+      <div class="svc-name">Seasonal &amp;<br>Themed Displays</div>
+      <div class="svc-desc">Holiday windows, launch campaigns, seasonal refreshes — complete themed experiences to keep your storefront alive all year.</div>
+      <div class="svc-tag">Seasonal · Campaign →</div>
+    </div>
+    <div class="svc-item reveal r4">
+      <div class="svc-num">05</div>
+      <div class="svc-name">Concept &amp; Brand<br>Storytelling</div>
+      <div class="svc-desc">Before anything is built, we develop the narrative — mood, palette, the one feeling a passerby should take away.</div>
+      <div class="svc-tag">Art Direction · Brand →</div>
+    </div>
+    <div class="svc-item reveal">
+      <div class="svc-num">06</div>
+      <div class="svc-name">Full Install<br>&amp; Setup</div>
+      <div class="svc-desc">We handle everything — delivery, installation, testing. Turnkey. Maintenance and seasonal swap-outs available.</div>
+      <div class="svc-tag">Installation · Support →</div>
+    </div>
+  </div>
+
+  <div style="margin-top:4rem;" class="reveal">
+    <a href="services.html" class="btn btn--outline">See All Services →</a>
+  </div>
+</section>
+
+<!-- ═══════════ PROCESS STRIP ═══════════ -->
+<section class="process-strip">
+  <div class="grid-lines"></div>
+  <div class="reveal">
+    <span class="eyebrow">How It Works</span>
+    <h2 class="display-md" style="margin-top:.5rem;">Four steps to <em>opening night.</em></h2>
+  </div>
+  <div class="process-steps">
+    <div class="ps reveal">
+      <div class="ps-big-num">1</div>
+      <span class="ps-label">Week 1</span>
+      <div class="ps-title">Discovery Call</div>
+      <p class="ps-body">We learn your shop, brand, and story. No brief needed — just a conversation.</p>
+    </div>
+    <div class="ps reveal r1">
+      <div class="ps-big-num">2</div>
+      <span class="ps-label">Weeks 2–3</span>
+      <div class="ps-title">Concept &amp; Design</div>
+      <p class="ps-body">Mood boards, sketches, 3D previews. You approve everything before we build.</p>
+    </div>
+    <div class="ps reveal r2">
+      <div class="ps-big-num">3</div>
+      <span class="ps-label">Weeks 4–7</span>
+      <div class="ps-title">Build &amp; Fabricate</div>
+      <p class="ps-body">We print, paint, engineer and assemble every element by hand. Progress updates throughout.</p>
+    </div>
+    <div class="ps reveal r3">
+      <div class="ps-big-num">4</div>
+      <span class="ps-label">Final Week</span>
+      <div class="ps-title">Install &amp; Launch</div>
+      <p class="ps-body">We come to you, set everything up and hand over a window ready to run. We don't leave until it's perfect.</p>
+    </div>
+  </div>
+  <div style="margin-top:3rem;" class="reveal">
+    <a href="process.html" class="btn btn--outline">Full Process →</a>
+  </div>
+</section>
+
+<!-- ═══════════ STATS ═══════════ -->
+<section class="stats-block">
+  <div class="stats-block__ghost">100%</div>
+  <div class="stats-grid">
+    <div class="stat-cell reveal hoverable">
+      <div class="stat-num">100%</div>
+      <span class="stat-label">Custom — every project</span>
+    </div>
+    <div class="stat-cell reveal r1 hoverable">
+      <div class="stat-num">0</div>
+      <span class="stat-label">Off-the-shelf parts</span>
+    </div>
+    <div class="stat-cell reveal r2 hoverable">
+      <div class="stat-num">2</div>
+      <span class="stat-label">Engineers &amp; artists</span>
+    </div>
+    <div class="stat-cell reveal r3 hoverable">
+      <div class="stat-num">∞</div>
+      <span class="stat-label">Possible designs</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA ═══════════ -->
+<section class="home-cta">
+  <div class="home-cta__ghost">TAJ</div>
+  <div class="reveal">
+    <span class="eyebrow">Ready?</span>
+    <h2>Make your window<br><em>unforgettable.</em></h2>
+  </div>
+  <div class="home-cta__actions reveal r2">
+    <a href="contact.html" class="btn btn--fill"><span>Start a Project</span></a>
+    <a href="process.html" class="btn btn--text">See How It Works →</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__logo">Vitrine <em>Taj</em></div>
+  <div class="footer__links">
+    <a href="about.html">Our Story</a>
+    <a href="services.html">Services</a>
+    <a href="process.html">Process</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <div class="footer__copy">© 2026 Taj LLC</div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

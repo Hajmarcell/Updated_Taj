@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What We Create — Vitrine Taj</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+/* Hero — dark ink with big type */
+.svc-hero {
+  background: var(--ink-deep);
+  min-height: 70vh; padding: calc(var(--nav-h) + 4rem) 5rem 6rem;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  position: relative; overflow: hidden;
+}
+.svc-hero .grid-lines { opacity:.7; }
+.svc-hero__ghost {
+  position:absolute;font-family:var(--serif);font-size:32vw;font-weight:700;
+  color:rgba(240,232,216,.02);line-height:1;top:50%;right:-3rem;
+  transform:translateY(-50%);pointer-events:none;letter-spacing:-.04em;
+}
+.svc-hero h1 { font-family:var(--serif);font-size:clamp(4rem,9vw,12rem);font-weight:700;letter-spacing:-.04em;line-height:.85;opacity:0;animation:riseIn .9s .4s forwards; }
+.svc-hero h1 em { font-style:italic;font-weight:400;color:var(--orange); }
+.svc-hero__sub { font-size:.82rem;line-height:2;color:var(--muted-lt);max-width:520px;margin-top:2rem;opacity:0;animation:riseIn .9s .65s forwards; }
+.svc-hero__sub strong { color:var(--cream);font-weight:400; }
+
+/* Services — alternating layout (big + small, Moooi-inspired) */
+.svc-section { padding: 0 5rem 6rem; background: var(--ink-deep); }
+
+/* Giant row item */
+.svc-row {
+  display: grid; grid-template-columns: 10rem 1fr 2fr auto;
+  gap: 4rem; align-items: start;
+  padding: 5rem 0;
+  border-top: 1px solid rgba(240,232,216,.07);
+  position: relative;
+  transition: background .3s; cursor: none;
+}
+.svc-row:last-child { border-bottom: 1px solid rgba(240,232,216,.07); }
+.svc-row::before {
+  content:''; position:absolute; left:-5rem; right:-5rem; top:0; bottom:0;
+  background: var(--orange);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .6s var(--ease); z-index:0;
+}
+.svc-row:hover::before { transform:scaleX(1); }
+.svc-row > * { position:relative; z-index:1; }
+.svc-row:hover .svc-row__num { color:rgba(240,232,216,.15); }
+.svc-row:hover .svc-row__name { color:var(--cream); }
+.svc-row:hover .svc-row__desc { color:rgba(240,232,216,.8); }
+.svc-row:hover .svc-row__tag { color:rgba(240,232,216,.6); }
+
+.svc-row__num {
+  font-family:var(--serif); font-size:clamp(4rem,6vw,8rem); font-weight:700;
+  line-height:1; color:rgba(240,232,216,.06);
+  letter-spacing:-.04em; transition:color .4s;
+}
+.svc-row__name {
+  font-family:var(--serif); font-size:clamp(1.4rem,2.5vw,3rem);
+  font-weight:400; line-height:1.1; transition:color .4s;
+  padding-top:.5rem;
+}
+.svc-row__desc {
+  font-size:.72rem; line-height:2; color:var(--muted-lt);
+  padding-top:.6rem; transition:color .4s;
+}
+.svc-row__tag {
+  font-size:.45rem; letter-spacing:.32em; text-transform:uppercase;
+  color:var(--blue); white-space:nowrap; padding-top:.8rem;
+  transition:color .4s;
+}
+
+/* Who we serve — orange block */
+.serve-block {
+  background: var(--orange); padding: 8rem 5rem;
+  position: relative; overflow: hidden;
+  clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+  margin-top: -2vw; z-index: 2;
+}
+.serve-block__ghost {
+  position:absolute;font-family:var(--serif);font-size:28vw;font-weight:700;
+  color:rgba(0,0,0,.06);top:50%;right:-3rem;transform:translateY(-50%);
+  pointer-events:none;
+}
+.serve-block h2 {
+  font-family:var(--serif);font-size:clamp(3rem,6vw,9rem);font-weight:700;
+  letter-spacing:-.03em;line-height:.88;color:var(--cream);margin-bottom:4rem;
+}
+.serve-block h2 em { font-style:italic;font-weight:400;color:rgba(240,232,216,.6); }
+.serve-grid {
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border:1px solid rgba(0,0,0,.12);
+}
+.serve-cell {
+  padding:2rem 2rem;
+  border-right:1px solid rgba(0,0,0,.12);
+  display:flex;align-items:center;gap:.8rem;
+  font-size:.68rem;letter-spacing:.05em;color:rgba(240,232,216,.8);
+  transition:background .25s;
+}
+.serve-cell:last-child { border-right:none; }
+.serve-cell:hover { background:rgba(0,0,0,.08); color:var(--cream); }
+.serve-cell::before { content:'';width:.35rem;height:.35rem;background:rgba(240,232,216,.6);border-radius:50%;flex-shrink:0; }
+
+/* Bottom CTA */
+.svc-cta {
+  background:var(--ink); padding:7rem 5rem;
+  display:flex; align-items:center; justify-content:space-between; gap:4rem;
+  position:relative; z-index:1; margin-top:-2vw;
+}
+.svc-cta h2 { font-family:var(--serif);font-size:clamp(2.5rem,5vw,7rem);font-weight:700;letter-spacing:-.03em;line-height:.88; }
+.svc-cta h2 em { font-style:italic;font-weight:400;color:var(--orange); }
+
+@media(max-width:1024px){
+  .svc-hero { padding:calc(var(--nav-h)+3rem) 2.5rem 5rem; }
+  .svc-section { padding:0 2.5rem 4rem; }
+  .svc-row { grid-template-columns:3.5rem 1fr;gap:1.5rem 2rem;grid-template-rows:auto auto auto; }
+  .svc-row__desc,.svc-row__tag { grid-column:2; }
+  .svc-row::before { left:-2.5rem;right:-2.5rem; }
+  .serve-block { padding:6rem 2.5rem;clip-path:none;margin-top:0; }
+  .serve-grid { grid-template-columns:1fr 1fr; }
+  .serve-cell { border-bottom:1px solid rgba(0,0,0,.12); }
+  .svc-cta { flex-direction:column;align-items:flex-start;padding:5rem 2.5rem;margin-top:0; }
+}
+@media(max-width:640px){
+  .serve-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="cur"></div>
+
+<nav class="nav">
+  <a class="nav__logo" href="index.html">Vitrine <em>Taj</em></a>
+  <div class="nav__links">
+    <a class="nav__link" href="about.html">Our Story</a>
+    <a class="nav__link" href="services.html">What We Create</a>
+    <a class="nav__link" href="process.html">Process</a>
+    <a class="nav__link" href="contact.html">Contact</a>
+  </div>
+  <a class="nav__cta btn" href="contact.html">Start a Project</a>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav__drawer">
+  <a href="index.html">Home</a><a href="about.html">Our Story</a>
+  <a href="services.html">What We Create</a><a href="process.html">Process</a>
+  <a href="contact.html">Start a Project</a>
+</div>
+
+<section class="svc-hero">
+  <div class="grid-lines"></div>
+  <div class="svc-hero__ghost">6</div>
+  <span class="eyebrow" style="opacity:0;animation:riseIn .7s .2s forwards;">What We Create</span>
+  <h1>Every display<br>built from<br><em>nothing.</em></h1>
+  <p class="svc-hero__sub">No templates. No catalogue parts. <strong>Every Vitrine Taj display is designed and custom built from scratch</strong> — from the first sketch to the final screw.</p>
+</section>
+
+<div class="svc-section">
+  <div class="svc-row reveal">
+    <div class="svc-row__num">01</div>
+    <div class="svc-row__name">Kinetic &amp;<br>Automated<br>Displays</div>
+    <div class="svc-row__desc">Custom-engineered motion mechanisms — rotating, oscillating, rising and falling — that bring your display to life around the clock. We design and build everything in-house, from the motor logic to the final finish.</div>
+    <div class="svc-row__tag">Motion Design<br>Automation<br>Electronics</div>
+  </div>
+  <div class="svc-row reveal">
+    <div class="svc-row__num">02</div>
+    <div class="svc-row__name">3D Printed<br>Sculpture<br>&amp; Props</div>
+    <div class="svc-row__desc">One-of-a-kind sculptural pieces fabricated specifically for your brand — from intricate geometric forms to figurative characters. Nothing off-the-shelf. Every piece designed to tell your story.</div>
+    <div class="svc-row__tag">Custom Fabrication<br>Sculpture<br>3D Design</div>
+  </div>
+  <div class="svc-row reveal">
+    <div class="svc-row__num">03</div>
+    <div class="svc-row__name">Painted Art<br>&amp;<br>Illustration</div>
+    <div class="svc-row__desc">Hand-painted backdrops, illustrated scenes, and original artwork that give your display depth and atmosphere. A painterly touch that no screen or print can replicate.</div>
+    <div class="svc-row__tag">Fine Art<br>Hand-Painted<br>Illustration</div>
+  </div>
+  <div class="svc-row reveal">
+    <div class="svc-row__num">04</div>
+    <div class="svc-row__name">Seasonal &amp;<br>Themed<br>Displays</div>
+    <div class="svc-row__desc">Holiday windows, launch campaigns, seasonal refreshes — complete themed experiences that keep your storefront feeling current and alive all year round.</div>
+    <div class="svc-row__tag">Seasonal<br>Campaign<br>Refresh</div>
+  </div>
+  <div class="svc-row reveal">
+    <div class="svc-row__num">05</div>
+    <div class="svc-row__name">Concept &amp;<br>Brand<br>Storytelling</div>
+    <div class="svc-row__desc">Before anything is built, we develop the narrative. What's the mood? The palette? The one thing a passerby should feel? We art-direct the full concept so every element works together.</div>
+    <div class="svc-row__tag">Art Direction<br>Concept<br>Brand</div>
+  </div>
+  <div class="svc-row reveal">
+    <div class="svc-row__num">06</div>
+    <div class="svc-row__name">Full Install<br>&amp;<br>Setup</div>
+    <div class="svc-row__desc">We handle delivery, installation, and testing ourselves. Your display arrives turnkey — everything secured, motion tested, and ready to run. Maintenance and seasonal swap-outs available.</div>
+    <div class="svc-row__tag">Installation<br>Maintenance<br>Support</div>
+  </div>
+</div>
+
+<section class="serve-block">
+  <div class="serve-block__ghost">7</div>
+  <span class="eyebrow--cream eyebrow reveal">Who We Serve</span>
+  <h2 class="reveal">Made for<br><em>independent shops.</em></h2>
+  <div class="serve-grid">
+    <div class="serve-cell reveal">Clothing &amp; fashion boutiques</div>
+    <div class="serve-cell reveal r1">Florists &amp; plant shops</div>
+    <div class="serve-cell reveal r2">Jewelry &amp; accessories</div>
+    <div class="serve-cell reveal r3">Bookshops &amp; gift stores</div>
+    <div class="serve-cell reveal">Bakeries &amp; food retailers</div>
+    <div class="serve-cell reveal r1">Spas, studios &amp; wellness</div>
+    <div class="serve-cell reveal r2">Homeware &amp; interiors</div>
+    <div class="serve-cell reveal r3">Any shop with a great story</div>
+  </div>
+</section>
+
+<section class="svc-cta">
+  <div class="reveal">
+    <span class="eyebrow">Ready to start?</span>
+    <h2>Let's build<br>something<br><em>extraordinary.</em></h2>
+  </div>
+  <div class="reveal r2" style="display:flex;flex-direction:column;gap:1rem;align-items:flex-end;">
+    <a href="contact.html" class="btn btn--fill"><span>Request a Quote</span></a>
+    <a href="process.html" class="btn btn--text">See How It Works →</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__logo">Vitrine <em>Taj</em></div>
+  <div class="footer__links">
+    <a href="about.html">Our Story</a><a href="services.html">Services</a>
+    <a href="process.html">Process</a><a href="contact.html">Contact</a>
+  </div>
+  <div class="footer__copy">© 2026 Taj LLC</div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

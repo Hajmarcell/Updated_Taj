@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get a Quote — Vitrine Taj</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+/* Full-page split: orange left, dark right */
+.contact-layout {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  padding-top: var(--nav-h);
+}
+
+/* LEFT — orange atmospheric */
+.cl-left {
+  background: var(--orange);
+  padding: 5rem 4rem 5rem 5rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: sticky; top: var(--nav-h);
+  height: calc(100vh - var(--nav-h));
+  overflow: hidden;
+}
+.cl-left__ghost {
+  position: absolute; font-family: var(--serif); font-size: 30vw; font-weight: 700;
+  color: rgba(0,0,0,.07); line-height: 1; bottom: -3rem; right: -3rem;
+  pointer-events: none; letter-spacing: -.05em;
+}
+.cl-left__top { position: relative; z-index: 1; }
+.cl-left__label { font-size:.48rem;letter-spacing:.45em;text-transform:uppercase;color:rgba(240,232,216,.6);display:block;margin-bottom:1.5rem; }
+.cl-left h2 { font-family:var(--serif);font-size:clamp(3rem,5vw,7rem);font-weight:700;letter-spacing:-.04em;line-height:.85;color:var(--cream); }
+.cl-left h2 em { font-style:italic;font-weight:400;color:rgba(240,232,216,.6); }
+
+.cl-left__details { position:relative;z-index:1;display:flex;flex-direction:column;gap:1.2rem; }
+.cd-row { display:flex;gap:1.5rem;align-items:baseline; }
+.cd-label { font-size:.45rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(240,232,216,.6);width:80px;flex-shrink:0; }
+.cd-val { font-size:.72rem;color:rgba(240,232,216,.9); }
+
+.cl-left__why { position:relative;z-index:1; }
+.cl-left__why-title { font-size:.45rem;letter-spacing:.38em;text-transform:uppercase;color:rgba(240,232,216,.55);margin-bottom:1.2rem;display:block; }
+.cl-left__why-list { display:flex;flex-direction:column;gap:0; }
+.why-row { display:flex;gap:1rem;align-items:flex-start;padding:.9rem 0;border-bottom:1px solid rgba(0,0,0,.08); }
+.why-row::before { content:'';width:.35rem;height:.35rem;background:rgba(240,232,216,.7);border-radius:50%;flex-shrink:0;margin-top:.45rem; }
+.why-row span { font-size:.68rem;line-height:1.7;color:rgba(240,232,216,.8); }
+.why-row span strong { color:var(--cream);font-weight:400; }
+
+/* RIGHT — form on dark */
+.cl-right {
+  background: var(--ink-deep);
+  padding: 5rem;
+  border-left: 1px solid rgba(240,232,216,.05);
+}
+.cl-right h3 { font-family:var(--serif);font-size:clamp(2rem,3vw,4rem);font-weight:400;line-height:1.0;margin-bottom:3rem; }
+.cl-right h3 em { font-style:italic;color:var(--orange); }
+
+.form-row { margin-bottom:1.5rem; }
+.form-row label { display:block;font-size:.45rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem; }
+.form-row input,
+.form-row select,
+.form-row textarea {
+  width:100%;padding:.95rem 1.2rem;
+  background:rgba(240,232,216,0.03);
+  border:1px solid rgba(240,232,216,0.07);
+  border-bottom-color:rgba(196,81,42,0.35);
+  color:var(--cream);font-family:var(--sans);font-size:.75rem;font-weight:300;
+  outline:none;transition:border-color .3s,background .3s;cursor:none;appearance:none;
+}
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus { border-color:var(--orange);background:rgba(196,81,42,.04); }
+.form-row input::placeholder,
+.form-row textarea::placeholder { color:rgba(240,232,216,.18); }
+.form-row select option { background:var(--ink-deep); }
+.form-row textarea { resize:vertical;min-height:130px; }
+.form-grid { display:grid;grid-template-columns:1fr 1fr;gap:1rem; }
+
+.cb-group { display:flex;flex-direction:column;gap:.7rem;margin-top:.5rem; }
+.cb-label { display:flex;align-items:center;gap:.8rem;font-size:.68rem;color:var(--muted-lt);cursor:none;transition:color .25s; }
+.cb-label input[type="checkbox"] { width:14px;height:14px;accent-color:var(--orange);cursor:none; }
+.cb-label:hover { color:var(--cream); }
+
+.form-submit {
+  width:100%;padding:1.2rem;
+  background:var(--orange);border:none;
+  color:var(--cream);font-family:var(--sans);
+  font-size:.52rem;letter-spacing:.32em;text-transform:uppercase;
+  cursor:none;position:relative;overflow:hidden;margin-top:.5rem;
+}
+.form-submit::after { content:'';position:absolute;inset:0;background:var(--blue-deep);transform:translateX(-101%);transition:transform .4s var(--ease); }
+.form-submit:hover::after { transform:translateX(0); }
+.form-submit span { position:relative;z-index:1; }
+
+.success-wrap { display:none;text-align:center;padding:6rem 2rem; }
+.success-wrap h3 { font-family:var(--serif);font-size:clamp(2.5rem,4vw,5rem);font-weight:700;letter-spacing:-.03em;line-height:.9; }
+.success-wrap h3 em { font-style:italic;font-weight:400;color:var(--orange); }
+.success-wrap p { font-size:.78rem;line-height:2;color:var(--muted-lt);margin-top:1.5rem; }
+
+@media(max-width:1024px){
+  .contact-layout { grid-template-columns:1fr; }
+  .cl-left { position:relative;top:0;height:auto;min-height:60vw;padding:4rem 2.5rem; }
+  .cl-right { padding:4rem 2.5rem; }
+}
+@media(max-width:640px){
+  .form-grid { grid-template-columns:1fr; }
+  .cl-right { padding:3rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+<div class="cur"></div>
+
+<nav class="nav nav--orange">
+  <a class="nav__logo" href="index.html">Vitrine <em>Taj</em></a>
+  <div class="nav__links">
+    <a class="nav__link" href="about.html">Our Story</a>
+    <a class="nav__link" href="services.html">What We Create</a>
+    <a class="nav__link" href="process.html">Process</a>
+    <a class="nav__link" href="contact.html">Contact</a>
+  </div>
+  <a class="nav__cta btn" href="contact.html">Start a Project</a>
+  <button class="nav__burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav__drawer">
+  <a href="index.html">Home</a><a href="about.html">Our Story</a>
+  <a href="services.html">What We Create</a><a href="process.html">Process</a>
+  <a href="contact.html">Start a Project</a>
+</div>
+
+<div class="contact-layout">
+
+  <!-- ORANGE LEFT -->
+  <div class="cl-left">
+    <div class="cl-left__ghost">V</div>
+
+    <div class="cl-left__top">
+      <span class="cl-left__label">Get In Touch</span>
+      <h2>Let's make<br>your window<br><em>unforgettable.</em></h2>
+    </div>
+
+    <div class="cl-left__why">
+      <span class="cl-left__why-title">Why Vitrine Taj</span>
+      <div class="cl-left__why-list">
+        <div class="why-row"><span><strong>Nothing off the shelf</strong> — every display designed from scratch.</span></div>
+        <div class="why-row"><span><strong>You approve everything</strong> before we build a single piece.</span></div>
+        <div class="why-row"><span><strong>We install it ourselves</strong> — no crates, no DIY assembly.</span></div>
+        <div class="why-row"><span><strong>Ongoing support</strong> after opening night.</span></div>
+      </div>
+    </div>
+
+    <div class="cl-left__details">
+      <div class="cd-row"><span class="cd-label">Email</span><span class="cd-val">hello@vitrinetaj.com</span></div>
+      <div class="cd-row"><span class="cd-label">Instagram</span><span class="cd-val">@vitrinetaj</span></div>
+      <div class="cd-row"><span class="cd-label">Response</span><span class="cd-val">Within 24 hours</span></div>
+    </div>
+  </div>
+
+  <!-- DARK RIGHT: FORM -->
+  <div class="cl-right">
+    <h3>Request<br>a <em>Quote.</em></h3>
+
+    <div id="formWrap">
+      <div class="form-grid">
+        <div class="form-row"><label>Your Name</label><input type="text" placeholder="Jane Smith"></div>
+        <div class="form-row"><label>Shop / Business Name</label><input type="text" placeholder="The Little Florist"></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-row"><label>Email</label><input type="email" placeholder="jane@yourshop.com"></div>
+        <div class="form-row"><label>City</label><input type="text" placeholder="Your city"></div>
+      </div>
+      <div class="form-row">
+        <label>Type of Shop</label>
+        <select>
+          <option value="" disabled selected>Select your shop type</option>
+          <option>Clothing &amp; Fashion Boutique</option>
+          <option>Florist &amp; Plant Shop</option>
+          <option>Jewelry &amp; Accessories</option>
+          <option>Bookshop &amp; Gift Store</option>
+          <option>Bakery &amp; Food</option>
+          <option>Spa / Wellness / Studio</option>
+          <option>Homeware &amp; Interiors</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>What interests you?</label>
+        <div class="cb-group">
+          <label class="cb-label"><input type="checkbox"> Kinetic / motion display</label>
+          <label class="cb-label"><input type="checkbox"> 3D printed sculpture</label>
+          <label class="cb-label"><input type="checkbox"> Hand-painted artwork</label>
+          <label class="cb-label"><input type="checkbox"> Seasonal / themed display</label>
+          <label class="cb-label"><input type="checkbox"> Not sure yet — open to ideas</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Tell us about your vision</label>
+        <textarea placeholder="What do you want people to feel when they see your window? Any themes, colours, or ideas? Don't worry if it's vague — that's what we're here for."></textarea>
+      </div>
+      <button class="form-submit" id="submitBtn"><span>Send My Request →</span></button>
+    </div>
+
+    <div class="success-wrap" id="successMsg">
+      <h3>Request<br><em>received.</em></h3>
+      <p>Thank you — we'll be in touch within 24 hours.<br>Follow us at <strong>@vitrinetaj</strong> in the meantime.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="footer__logo">Vitrine <em>Taj</em></div>
+  <div class="footer__links">
+    <a href="about.html">Our Story</a><a href="services.html">Services</a>
+    <a href="process.html">Process</a><a href="contact.html">Contact</a>
+  </div>
+  <div class="footer__copy">© 2026 Taj LLC</div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+document.getElementById('submitBtn').addEventListener('click', () => {
+  document.getElementById('formWrap').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+});
+</script>
+</body>
+</html>
